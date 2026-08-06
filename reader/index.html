@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+
+<html lang="zh-cn">
+
+<head>
+
+<meta charset="utf-8">
+<meta name="viewport"
+      content="width=device-width,
+               initial-scale=1.0">
+<title>在线阅读器</title>
+
+<link rel="stylesheet" href="viewer.css">
+
+</head>
+
+<body>
+
+<div id="container">
+
+    <div id="sidebar">
+
+        <h3 style="padding:10px">
+            目录
+        </h3>
+
+        <ul id="toc"></ul>
+
+    </div>
+
+    <button id="menuBtn" style="position:fixed; top:10px; left:10px; z-index:1100;">
+        ☰
+    </button>
+
+    <div id="viewer-container">
+
+        <div id="toolbar">
+
+            <button id="prevPage">
+                ←
+            </button>
+
+            <button id="nextPage">
+                →
+            </button>
+
+            <input
+                id="pageInput"
+                type="number"
+                style="width:80px">
+
+            <button id="goPage">
+                跳转
+            </button>
+
+            <span id="pageInfo">
+                第1页
+            </span>
+
+            <input
+                id="searchInput"
+                placeholder="搜索">
+
+            <button id="searchBtn">
+                搜索
+            </button>
+            <div class="book-info">
+
+                <span id="version"></span>
+
+                <span id="lastUpdateTime"></span>
+
+                <span id="author"></span>
+
+            </div>
+        </div>
+
+        <div id="viewer"></div>
+    </div>
+
+</div>
+
+<script src="/openseadragon/openseadragon.min.js"></script>
+
+<script src="viewer.js"></script>
+
+</body>
+
+</html>
