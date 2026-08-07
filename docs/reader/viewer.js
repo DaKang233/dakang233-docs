@@ -40,7 +40,7 @@ function pagePath(page) {
         .padStart(3,"0");
 
     return (
-        `${basePath}page_${p}.dzi`
+        `${basePath}page${p}.dzi`
     );
 }
 
