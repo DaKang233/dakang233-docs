@@ -23,8 +23,15 @@ function getBook() {
 
 currentBook = getBook();
 
+const BOOKS_ORIGIN =
+    "https://assets.dakang233.com";
+
+if (!/^[a-zA-Z0-9_-]+$/.test(currentBook)) {
+    throw new Error("无效的书籍标识");
+}
+
 const basePath =
-    `/books/${currentBook}/`;
+    `${BOOKS_ORIGIN}/books/${currentBook}/`;
 
 function pagePath(page) {
 
@@ -41,6 +48,9 @@ viewer = OpenSeadragon({
     id: "viewer",
     prefixUrl: "/openseadragon/images/",
     tileSources: pagePath(1),
+
+    crossOriginPolicy: "Anonymous",
+    ajaxWithCredentials: false,
 
     gestureSettingsTouch: {
         pinchToZoom: true,      // 支持双指缩放
