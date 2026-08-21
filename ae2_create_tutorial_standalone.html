@@ -1,0 +1,699 @@
+<!DOCTYPE html>
+<html lang="zh-CN"><head><meta charset="utf-8"/><meta content="width=device-width, initial-scale=1" name="viewport"/><title>机械动力生产线接入 AE2 自动合成系统的方法论</title><meta content="将机械动力生产线抽象为可被 AE2 调用的自动化单元，通过输入与输出接口实现自动合成接入。" name="description"/><style>
+:root{
+  --bg:#f5f7fb;
+  --card:#ffffff;
+  --text:#172033;
+  --muted:#5b6475;
+  --line:#e5e9f2;
+  --accent:#2563eb;
+  --accent-weak:#eff6ff;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth; scroll-padding-top:120px}
+body{
+  margin:0;
+  background:var(--bg);
+  color:var(--text);
+  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif;
+  line-height:1.8;
+}
+a{color:var(--accent); text-decoration:none}
+a:hover{text-decoration:underline}
+.wrap{
+  max-width:1100px;
+  margin:0 auto;
+  padding:32px 20px 48px;
+}
+.hero{
+  background:linear-gradient(180deg,#fff, #f8fbff);
+  border:1px solid var(--line);
+  border-radius:24px;
+  padding:28px 28px 22px;
+  box-shadow:0 10px 30px rgba(17,24,39,.04);
+}
+.kicker{
+  color:var(--accent);
+  font-size:14px;
+  font-weight:700;
+  letter-spacing:.08em;
+  text-transform:uppercase;
+}
+h1{
+  margin:8px 0 10px;
+  font-size:clamp(30px, 4vw, 44px);
+  line-height:1.15;
+}
+.subtitle{
+  margin:0;
+  color:var(--muted);
+  font-size:16px;
+}
+.layout{
+  display:grid;
+  grid-template-columns:280px minmax(0,1fr);
+  gap:24px;
+  margin-top:24px;
+}
+@media (max-width: 900px){
+  .layout{grid-template-columns:1fr}
+}
+.card{
+  background:var(--card);
+  border:1px solid var(--line);
+  border-radius:24px;
+  box-shadow:0 10px 30px rgba(17,24,39,.04);
+}
+.toc{
+  padding:18px 18px 8px;
+  position:sticky;
+  top:20px;
+  align-self:start;
+  max-height:calc(100vh - 40px);
+  overflow:auto;
+  overscroll-behavior:contain;
+}
+.toc .title{
+  font-weight:700;
+  font-size:15px;
+  margin:0 0 10px;
+}
+.toc ul{list-style:none; padding:0; margin:0}
+.toc li{margin:0}
+.toc .l1>a{font-weight:700}
+.toc .l2{padding-left:14px}
+.toc .l3{padding-left:28px}
+.toc a{
+  display:block;
+  padding:6px 8px;
+  border-radius:10px;
+  color:var(--text);
+  transition:background .18s ease,color .18s ease,transform .18s ease;
+}
+.toc a:hover{background:var(--accent-weak); text-decoration:none}
+.toc a.active{
+  background:var(--accent-weak);
+  color:var(--accent);
+  font-weight:700;
+}
+.article{
+  padding:28px;
+}
+.article > *:first-child{margin-top:0}
+.article p{
+  margin:0 0 1em;
+}
+.article hr{
+  border:none;
+  border-top:1px solid var(--line);
+  margin:22px 0;
+}
+.article ul, .article ol{
+  padding-left:1.4em;
+  margin:0 0 1em;
+}
+.article li{margin: .25em 0}
+.article figure,
+.article .figure{
+  display:block;
+  margin:24px auto;
+  text-align:center;
+}
+.article img{
+  max-width:100%;
+  height:auto;
+  border-radius:16px;
+  border:1px solid var(--line);
+  background:#fff;
+}
+.article figcaption,
+.article .figcaption{
+  display:block;
+  margin-top:8px;
+  color:var(--muted);
+  font-size:12px;
+  line-height:1.5;
+  text-align:center;
+}
+.section-title{
+  margin:30px 0 12px;
+  line-height:1.25;
+  scroll-margin-top:16px;
+}
+.level-2{font-size:28px}
+.level-3{font-size:22px}
+.level-4{font-size:18px}
+.common-text-title{
+  font-weight:800;
+}
+.common-text-title-1,
+.common-text-title-2,
+.common-text-title-3{
+  display:inline;
+}
+blockquote{
+  margin:18px 0;
+  padding:0 0 0 16px;
+  border-left:4px solid var(--line);
+  color:var(--muted);
+}
+code{
+  background:#eef2ff;
+  padding:.15em .35em;
+  border-radius:6px;
+}
+@media print{
+  body{background:#fff}
+  .wrap{max-width:none; padding:0}
+  .hero, .card{box-shadow:none}
+  .toc{position:static}
+}
+</style></head><body><div class="wrap"><section class="hero"><div class="kicker">大康233 编著</div><h1>机械动力生产线接入 AE2 自动合成系统的方法论</h1><p class="subtitle">将机械动力生产线抽象为可被 AE2 调用的自动化单元，通过输入与输出接口实现自动合成接入。</p></section><div class="layout"><aside class="card toc"><div class="common-text-menu" data-id="ctm-nuy4aoHG">
+<ul>
+<li class="title"><i class="fa fa-chevron-circle-right common-text-menu-style-button pointer"></i>
+                                        目录:</li>
+<li class="l1"><a data-for="ctm-title-3ncvlSAV" href="#ctm-title-3ncvlSAV"><span>1
+                                            </span>基本原理</a></li>
+<li class="l1"><a data-for="ctm-title-Q5f64WPm" href="#ctm-title-Q5f64WPm"><span>2
+                                            </span>标准接入结构</a></li>
+<li class="l2"><a data-for="ctm-title-FkvvjqSP" href="#ctm-title-FkvvjqSP"><span>2.1
+                                            </span>结构组成</a></li>
+<li class="l2"><a data-for="ctm-title-vwqOk4vc" href="#ctm-title-vwqOk4vc"><span>2.2
+                                            </span>结构说明</a></li>
+<li class="l3"><a data-for="ctm-title-7BBbMIup" href="#ctm-title-7BBbMIup"><span>2.2.1 </span>方式一：使用输出容器 + ME
+                                            输入总线（传统方式）</a></li>
+<li class="l3"><a data-for="ctm-title-wUi5ieZV" href="#ctm-title-wUi5ieZV"><span>2.2.2 </span>方式二：使用 ME 接口 +
+                                            运输结构回流（推荐方式）</a></li>
+<li class="l2"><a data-for="ctm-title-Q9TAPfl3" href="#ctm-title-Q9TAPfl3"><span>2.3
+                                            </span>工作流程</a></li>
+<li class="l1"><a data-for="ctm-title-vT_m7rOf" href="#ctm-title-vT_m7rOf"><span>3
+                                            </span>总体案例：基于传送带的集中回流自动合成系统</a></li>
+<li class="l1"><a data-for="ctm-title-TTxckvCP" href="#ctm-title-TTxckvCP"><span>4
+                                            </span>简单案例：动力冲压机自动化</a></li>
+<li class="l2"><a data-for="ctm-title-slKD20AJ" href="#ctm-title-slKD20AJ"><span>4.1
+                                            </span>准备工作</a></li>
+<li class="l2"><a data-for="ctm-title-VLqU3Gvp" href="#ctm-title-VLqU3Gvp"><span>4.2
+                                            </span>开始搭建</a></li>
+<li class="l3"><a data-for="ctm-title-JOTZXOWL" href="#ctm-title-JOTZXOWL"><span>4.2.1 </span>动力辊压机生产线的建设</a></li>
+<li class="l3"><a data-for="ctm-title-BNoovMKy" href="#ctm-title-BNoovMKy"><span>4.2.2 </span>网络的建设及与生产线的接入</a></li>
+<li class="l2"><a data-for="ctm-title-R666PQ80" href="#ctm-title-R666PQ80"><span>4.3
+                                            </span>编写样板</a></li>
+<li class="l1"><a data-for="ctm-title-jZpq5f3V" href="#ctm-title-jZpq5f3V"><span>5
+                                            </span>进阶案例：精密构件的自动化合成</a></li>
+<li class="l2"><a data-for="ctm-title-fvPedIQp" href="#ctm-title-fvPedIQp"><span>5.1
+                                            </span>机械动力部分的搭建</a></li>
+<li class="l2"><a data-for="ctm-title-teFRipdq" href="#ctm-title-teFRipdq"><span>5.2
+                                            </span>子网络输入物流系统</a></li>
+<li class="l2"><a data-for="ctm-title-QsSmTR35" href="#ctm-title-QsSmTR35"><span>5.3
+                                            </span>编写样板</a></li>
+<li class="l3"><a data-for="ctm-title-v2k8IxaO" href="#ctm-title-v2k8IxaO"><span>5.3.1 </span>可能存在的小问题</a></li>
+<li class="l2"><a data-for="ctm-title-QAroOoyS" href="#ctm-title-QAroOoyS"><span>5.4
+                                            </span>完成精密构件合成自动化的其他一般必须的自动化</a></li>
+<li class="l1"><a data-for="ctm-title-q4DCmaAz" href="#ctm-title-q4DCmaAz"><span>6
+                                            </span>流体物体混合配方自动化：动力搅拌器</a></li>
+</ul>
+</div></aside><main class="card article"><div class="post-content common-text font14">
+
+<p>如果更关注实操，可以直接阅读后续案例部分。如有疑问或建议可在评论区留言。<br/></p>
+<hr/>
+
+<p>在使用 <a href="https://www.mcmod.cn/class/260.html" rel="noopener noreferrer" target="_blank">Applied Energistics
+                                    2</a>
+                                的自动合成系统时，大多数生产过程可以通过定义配方直接完成。然而，对于机械动力模组中的生产线而言，其加工过程通常依赖多方块结构与连续处理流程，这导致即便知道配方也可能不知道怎么接入自动合成系统。
+                            </p>
+<p>本文介绍一种将机械动力生产线抽象为可被 AE2 调用的自动化单元的方法，通过定义输入与输出接口，实现其在AE2自动合成系统中的调用，从而完成按需自动化生产。</p>
+<h2 class="section-title level-2" id="ctm-title-3ncvlSAV">基本原理</h2>
+<p>我们知道，<a href="https://www.mcmod.cn/item/920738.html" rel="noopener noreferrer" target="_blank">AE2 的自动合成</a>的基本过程是：
+                            </p>
+<ol style="list-style-type: decimal;">
+<li>
+<p>玩家或者网络自己发起某个物品的合成请求；</p>
+</li>
+<li>
+<p>系统根据样板将原料发送至对应的<a href="https://www.mcmod.cn/item/520164.html" rel="noopener noreferrer" target="_blank">样板供应器</a>；</p>
+</li>
+<li>
+<p>样板供应器将原料输入目标机器；</p>
+</li>
+<li>
+<p>机器完成加工后输出产物；</p>
+</li>
+<li>
+<p>产品被送回到网络存储。</p>
+</li>
+</ol>
+<p>这一过程适用于大多数工业模组中的单方块机器，例如 <a href="https://www.mcmod.cn/class/2.html" rel="noopener noreferrer" style="text-wrap-mode: wrap;" target="_blank">IC2</a>、<a href="https://www.mcmod.cn/class/187.html" rel="noopener noreferrer" style="text-wrap-mode: wrap;" target="_blank">通用机械</a>、<a href="https://www.mcmod.cn/class/634.html" rel="noopener noreferrer" style="text-wrap-mode: wrap;" target="_blank">热力膨胀</a>、末影接口等。这类机器通常具有明确的输入输出面，仅需将样板供应器连接至机器并配置输入输出，即可完成自动合成。
+                            </p>
+<p>相比之下，机械动力中的加工过程通常由多方块结构组成，并依赖传送带、机械装置及处理顺序等因素完成：</p>
+<ul>
+<li>
+<p>加工过程依赖结构而非单一方块</p>
+</li>
+<li>
+<p>物品在加工过程中处于流动状态</p>
+</li>
+<li>
+<p>多个步骤可能连续发生</p>
+</li>
+</ul>
+<p>由于上述特性，机械动力生产线难以直接作为「单一机器」接入 AE2 自动合成系统。</p>
+<p>因此，我们需要人为为生产线建立明确的输入与输出边界，使其能够被 AE2 自动合成系统识别并调用。</p>
+<p>为了解决这一问题，可以将整个 Create 生产线视为一个具有固定输入与输出的自动化单元，通过接口与 AE2 网络进行连接，从而实现自动合成调用。</p>
+<h2 class="section-title level-2" id="ctm-title-Q5f64WPm">标准接入结构</h2>
+<h3 class="section-title level-3" id="ctm-title-FkvvjqSP">结构组成</h3>
+<p>为了将机械动力生产线接入 AE2 自动合成系统，需要构建一个具有明确输入与输出的结构。一个典型的接入方式如下：</p>
+<ul>
+<li>
+<p>输入接口（ME接口或样板供应器）</p>
+</li>
+<li>
+<p>输入缓冲容器（箱子、木桶、抽屉等）</p>
+</li>
+<li>
+<p>机械动力加工结构</p>
+</li>
+<li>
+<p>产物运输结构（传送带、漏斗等）</p>
+</li>
+<li>
+<p>产物回流接口（ME接口或ME输入总线）</p>
+</li>
+</ul>
+<h3 class="section-title level-3" id="ctm-title-vwqOk4vc">结构说明</h3>
+<p>与传统工业模组自动化不同，机械动力生产线通常不以「输入容器 + 输出容器」的形式存在，而是通过传送带等方式连续运输物品。因此，其接入 AE2
+                                时，输出部分可以不局限于单一容器，而是采用运输结构将产物统一回流至网络。</p>
+<p>在实际应用中，常见的回流方式包括：</p>
+<h4 class="section-title level-4" id="ctm-title-7BBbMIup">方式一：使用输出容器 +
+                                    ME 输入总线（传统方式）</h4>
+<ul>
+<li>
+<p>每条生产线<strong>单独</strong>设置输出容器</p>
+</li>
+<li>
+<p>使用 ME 输入总线或者 ME 接口导入产物</p>
+</li>
+</ul>
+<p>特点：</p>
+<ul>
+<li>
+<p>结构简单</p>
+</li>
+<li>
+<p>易于理解</p>
+</li>
+<li>
+<p>适用于独立生产线</p>
+</li>
+</ul>
+<h4 class="section-title level-4" id="ctm-title-wUi5ieZV">方式二：使用 ME 接口
+                                    + 运输结构回流（推荐方式）</h4>
+<ul>
+<li>
+<p>使用传送带收集产物</p>
+</li>
+<li>
+<p>将多个生产线的产物统一运输至同一位置</p>
+</li>
+<li>
+<p>通过安装了安山漏斗的 ME 接口接收并导入网络</p>
+</li>
+</ul>
+<p>特点：</p>
+<ul>
+<li>
+<p>更符合机械动力的物流设计</p>
+</li>
+<li>
+<p>可实现多生产线集中回流</p>
+</li>
+<li>
+<p>减少接口数量</p>
+</li>
+</ul>
+<p>方式二本质上是将回流机制从 AE2 控制转移到物流系统本身。<br/></p>
+<h3 class="section-title level-3" id="ctm-title-Q9TAPfl3">工作流程</h3>
+<p>该结构的工作流程如下：</p>
+<ol>
+<li>
+<p>AE2 发起自动合成请求</p>
+</li>
+<li>
+<p>输入接口将材料输出至输入缓冲容器</p>
+</li>
+<li>
+<p>材料进入机械动力生产线并完成加工</p>
+</li>
+<li>
+<p>加工产物通过传送带或漏斗进行运输</p>
+</li>
+<li>
+<p>产物被导入 AE2 网络（通过接口或输入总线）</p>
+</li>
+<li>
+<p>AE2 检测到目标产物进入网络后，判定该次合成完成</p>
+<p><strong>AE2 并不关心中间加工过程，只根据产物是否回到网络来判断合成是否完成。<br/></strong></p>
+</li>
+</ol>
+<p>相比独立输出容器的方式，该结构更适合与机械动力中的传送带系统配合使用。</p>
+<h2 class="section-title level-2" id="ctm-title-vT_m7rOf">总体案例：基于传送带的集中回流自动合成系统</h2>
+<p><span class="figure"><img alt="正文预览-第1张图片" class="lazy" data-error="//www.mcmod.cn/images/loadfail.gif" data-height="300" data-src="https://www.dakang233.com/images/minecraft/2023-08-13_18.17.00.png" data-width="640" decoding="async" height="300" loading="lazy" src="https://www.dakang233.com/images/minecraft/2023-08-13_18.17.00.png" width="640"/><span class="figcaption">本示例中使用的MC版本是1.20.1</span></span><br/></p>
+<p><span class="figure"><img alt="正文预览-第2张图片" class="lazy" data-error="//www.mcmod.cn/images/loadfail.gif" data-height="300" data-src="https://www.dakang233.com/images/minecraft/2023-08-13_18.17.53.png" data-width="640" decoding="async" height="300" loading="lazy" src="https://www.dakang233.com/images/minecraft/2023-08-13_18.17.53.png" width="640"/><span class="figcaption">更完整的工业基地俯视图</span></span></p>
+<p>在上图中，可以明显地看到物流传输基本上使用传送带，并且在图中的左中位置有一个淡蓝色的 ME 接口，它的四个面都接上了安山漏斗：这个ME接口就是物流系统的终点。</p>
+<p>每个生产线一般都是合成步骤中的一步，比如动力辊压机配方就是单独一个生产线，而不和其他生产线杂糅在一起。这样做的好处是，生产线是可以复用的并且可供 AE2
+                                网络作为某个特定合成步骤中的一步参与到所有需要这个合成步骤的合成任务中。简单来说，动力辊压机就是生产所有的金属板，而这些金属板本身就可以被用于不同的物品的合成。</p>
+<p>这些生产线都沿着一个主要的回流传送带建造，生产线上的传送带的运动方向便是这个回流传送带，生产线上的传送带负责让原料经过机械动力的机器进行加工并返回。生产线传送带的开头通常是一个放置在传送带上的输入容器+黄铜/安山漏斗，或者是一个放置在传送带上的
+                                ME 样板供应器 / ME 存储总线。这和我们之前给出的工作流程相同。</p>
+<p>ME 样板供应器通过空中的线缆与 ME 网络连接，最终玩家可以在终端下单合成任务即可让原料自动输入到对应的生产线中然后逐步完成加工并返回到网络中。</p>
+<p>总的来说，物流过程如下：ME 样板供应器 → 生产线传送带 → 机械动力加工机器 → 总回流传送带 → ME接口。</p>
+
+<p>现在让我们来具体实操如何实现：</p>
+<p>以下案例基于 Minecraft NeoForge 1.21.1、Applied Energicstics 2 v19.2.17、Create v6.0.9 进行演示。</p>
+<h2 class="section-title level-2" id="ctm-title-TTxckvCP">简单案例：动力冲压机自动化</h2>
+<h3 class="section-title level-3" id="ctm-title-slKD20AJ">准备工作</h3>
+<p>你需要准备以下条件：</p>
+<p>一个成型完整的 ME
+                                网络，包括拥有网络存储空间（简单说就是可以存物品）、拥有足够的空闲频道、拥有自动合成系统所必须的设备，通常来说<strong>主网络</strong>需要以下内容：</p>
+<ol style="list-style-type: decimal;">
+<li>
+<p style="text-indent: 0em;">网络中安装了一个 <a href="https://www.mcmod.cn/item/655630.html" rel="noopener noreferrer" target="_blank">ME 控制器</a>(结构)</p>
+</li>
+<li>
+<p style="text-indent: 0em;">安装了至少一个 <a href="https://www.mcmod.cn/item/655631.html" rel="noopener noreferrer" target="_blank">ME 驱动器</a>或者连着可以存物品的容器的 <a href="https://www.mcmod.cn/item/655776.html" rel="noopener noreferrer" target="_blank">ME
+                                            存储总线</a>（简单说就是网络可以存东西）</p>
+</li>
+<li>
+<p style="text-indent: 0em;">安装了至少一个合成 CPU（<a href="https://www.mcmod.cn/item/846133.html" rel="noopener noreferrer" target="_blank">合成存储器</a>）</p>
+</li>
+<li>
+<p style="text-indent: 0em;">足够多的<a href="https://www.mcmod.cn/item/303012.html" rel="noopener noreferrer" target="_blank">线缆</a>方块</p>
+</li>
+<li>
+<p style="text-indent: 0em;">网络要通电</p>
+</li>
+</ol>
+<p style="text-indent: 0em;">以上只是组成网络的基本条件。你还需要准备一下机械动力方面的内容。</p>
+<p style="text-indent: 0em;">总的来说，你需要有这些物品：</p>
+<ul style="list-style-type: disc;">
+<li>
+<p style="text-indent: 0em;"><a href="https://www.mcmod.cn/item/655630.html" rel="noopener noreferrer" target="_blank">ME 控制器</a>、<a href="https://www.mcmod.cn/item/655631.html" rel="noopener noreferrer" target="_blank"><span style="text-indent: 0em;">ME 驱动器</span></a><span style="text-indent: 0em;">/</span><a href="https://www.mcmod.cn/item/655776.html" rel="noopener noreferrer" target="_blank"><span style="text-indent: 0em;">ME 存储总线</span></a><span style="text-indent: 0em;">、</span><a href="https://www.mcmod.cn/item/520164.html" rel="noopener noreferrer" target="_blank"><span style="text-indent: 0em;">ME 样板供应器</span></a><span style="text-indent: 0em;">、</span><a href="https://www.mcmod.cn/item/655784.html" rel="noopener noreferrer" target="_blank"><span style="text-indent: 0em;">ME 样板编码终端</span></a></p>
+</li>
+<li>
+<p style="text-indent: 0em;"><a href="https://www.mcmod.cn/item/655500.html" rel="noopener noreferrer" target="_blank">空白样板</a>若干个（编写合成配方需要用）</p>
+</li>
+<li>
+<p style="text-indent: 0em;">智能/玻璃/包层线缆若干个（三个随便一个都可以）</p>
+</li>
+<li>
+<p style="text-indent: 0em;">传送带、<span style="text-indent: 0em;">传动杆、十字齿轮箱若干个</span>
+</p>
+</li>
+<li>
+<p style="text-indent: 0em;"><span style="text-indent: 0em;">黄铜/安山漏斗</span></p>
+</li>
+<li>
+<p style="text-indent: 0em;"><span style="text-indent: 0em;">动力辊压机（也叫<strong>动力冲压机</strong>）</span></p>
+</li>
+<li>
+<p style="text-indent: 0em;">一个蒸汽机（蒸汽引擎、流体储罐、烈焰人燃烧室……）、水车或者其他<strong>动力源</strong>
+</p>
+</li>
+<li>
+<p style="text-indent: 0em;">发电机（比如 Create Crafts &amp; Additions 中的交流发电机）和能源接收器（给
+                                        ME 网络提供能源）</p>
+</li>
+</ul>
+<h3 class="section-title level-3" id="ctm-title-VLqU3Gvp">开始搭建</h3>
+<h4 class="section-title level-4" id="ctm-title-JOTZXOWL">动力辊压机生产线的建设</h4>
+<p style="text-indent: 0em;">一个简单的动力辊压机生产线可以这样设计：</p>
+<p style="text-indent: 0em;"><span class="figure"><img alt="正文预览-第3张图片" class="lazy" data-error="//www.mcmod.cn/images/loadfail.gif" data-height="300" data-src="https://www.dakang233.com/images/minecraft/tutorial02.png" data-width="492" decoding="async" height="300" loading="lazy" src="https://www.dakang233.com/images/minecraft/tutorial02.png" width="492"/><span class="figcaption">简单的动力辊压机生产线示例</span></span>
+</p>
+<p style="text-indent: 0em;">
+                                木桶是输入容器，用于接收待会我们放置的样板供应器的物品输入。原料从木桶中被黄铜漏斗提取出来进入传送带，然后经过动力辊压机（加工），加工后的产物再进入一个总的长传送带返回网络。
+                            </p>
+<h4 class="section-title level-4" id="ctm-title-BNoovMKy">网络的建设及与生产线的接入</h4>
+<p style="text-indent: 0em;">建好生产线以后，我们需要把 ME
+                                网络接入这个生产线。连接的方式就是在木桶上放置一个样板供应器，然后你可以<strong>通过任何方式</strong>把这个样板供应器连接到你的网络：</p>
+<p style="text-indent: 0em;"><span class="figure"><img alt="正文预览-第4张图片" class="lazy" data-error="//www.mcmod.cn/images/loadfail.gif" data-height="300" data-src="https://www.dakang233.com/images/minecraft/2026-04-25_00.09.06.png" data-width="570" decoding="async" loading="lazy" src="https://www.dakang233.com/images/minecraft/2026-04-25_00.09.06.png"/><span class="figcaption">比较简单的连接示例</span></span></p>
+<p style="text-indent: 0em;">出于频道管理的需求，在实际生产中你可能需要使用 P2P ME 通道、致密线缆等其他方式进行有效的频道管理分配。</p>
+<p style="text-indent: 0em;">接着，在回流传送带终点处放置一个 ME 接口，并给接口安装安山 /
+                                黄铜漏斗（因为两种漏洞在接收物品上没有区别，所以使用安山漏斗更节省资源），然后把 ME 接口接入到网络中。现在，一个可被网络调用的生产线就成型了：</p>
+<p style="text-indent: 0em;"><span class="figure"><img alt="正文预览-第5张图片" class="lazy" data-error="//www.mcmod.cn/images/loadfail.gif" data-height="300" data-src="https://www.dakang233.com/images/minecraft/2026-04-25_12.17.31.png" data-width="570" decoding="async" loading="lazy" src="https://www.dakang233.com/images/minecraft/2026-04-25_12.17.31.png"/><span class="figcaption">成型的动力冲压机生产线</span></span></p>
+<p style="text-indent: 0em;">可以为样板供应器命名（通过铁砧等方式）——在样板管理终端里可以以这个名称显示对应的样板供应器，方便管理。<span class="uknowtoomuch" data-by-nickname="大康" data-by-uid="94861" data-original-title="来自 大康(uid:94861) 的吐槽~ (具体以改动对比为准)" data-toggle="tooltip">毕竟你也不希望看到一大堆对着木桶的样板供应器却不知道是什么</span>
+</p>
+<p style="text-indent: 0em;">如果想要提高吞吐量、处理效率只需要使用黄铜隧道：</p>
+<p style="text-indent: 0em;"><span class="figure"><img alt="正文预览-第6张图片" class="lazy" data-error="//www.mcmod.cn/images/loadfail.gif" data-height="300" data-src="https://www.dakang233.com/images/minecraft/2026-04-25_13.48.40.png" data-width="570" decoding="async" loading="lazy" src="https://www.dakang233.com/images/minecraft/2026-04-25_13.48.40.png"/><span class="figcaption">多个动力冲压机并行</span></span></p>
+<h3 class="section-title level-3" id="ctm-title-R666PQ80">编写样板</h3>
+<p style="text-indent: 0em;">现在你需要使用 <a href="https://www.mcmod.cn/item/655784.html" rel="noopener noreferrer" target="_blank">ME
+                                    样板编码终端</a>进行样板的编写。打开一个可用的样板编码终端，选择「<strong>处理样板</strong>」（熔炉图标），在左侧九宫格标记合成材料为<strong>铁锭</strong>，在右侧的主产物材料标记为<strong>铁板</strong>：
+                            </p>
+<p style="text-indent: 0em;"><span class="figure"><img alt="正文预览-第7张图片" class="lazy" data-error="//www.mcmod.cn/images/loadfail.gif" data-height="200" data-src="https://www.dakang233.com/images/minecraft/tutorial03.png" data-width="400" decoding="async" loading="lazy" src="https://www.dakang233.com/images/minecraft/tutorial03.png"/><span class="figcaption">铁锭→铁板的合成样板</span></span></p>
+<p style="text-indent: 0em;">你可以通过 JEI 或者 EMI 搜索某个物品然后通过拖动的方式从 JEI 或者 EMI
+                                中拖到样板编码终端里，这样也可以标记，而不需要提前制作产物。</p>
+<p style="text-indent: 0em;">当然，通常 AE2 也支持通过 JEI 或者 EMI 直接填充某个配方：</p>
+<p style="text-indent: 0em;"><span class="figure"><img alt="正文预览-第8张图片" class="lazy" data-error="//www.mcmod.cn/images/loadfail.gif" data-height="300" data-src="https://www.dakang233.com/images/minecraft/tutorial04.png" data-width="500" decoding="async" loading="lazy" src="https://www.dakang233.com/images/minecraft/tutorial04.png"/><span class="figcaption">点击 + 可直接填充配方到样板编码终端里</span></span>
+</p>
+<p style="text-indent: 0em;">编写好样板后，点击向下箭头编码样板，这样得到一个处理样板：</p>
+<p style="text-indent: 0em;"><span class="figure"><img alt="正文预览-第9张图片" class="lazy" data-error="//www.mcmod.cn/images/loadfail.gif" data-height="150" data-src="https://www.dakang233.com/images/minecraft/tutorial05.png" data-width="260" decoding="async" loading="lazy" src="https://www.dakang233.com/images/minecraft/tutorial05.png"/><span class="figcaption">编码的样板</span></span></p>
+<p style="text-indent: 0em;">这个就是告诉 AE2
+                                自动合成系统怎么合成的物品，相当于配方。现在把它从样板编码终端里取出来，然后放入动力冲压机生产线的样板供应器：</p>
+<p style="text-indent: 0em;"><span class="figure"><img alt="正文预览-第10张图片" class="lazy" data-error="//www.mcmod.cn/images/loadfail.gif" data-height="260" data-src="https://www.dakang233.com/images/minecraft/tutorial06.png" data-width="400" decoding="async" loading="lazy" src="https://www.dakang233.com/images/minecraft/tutorial06.png"/></span></p>
+<p style="text-indent: 0em;">
+                                现在返回网络查看终端可以发现铁板会显示为可合成，通过按鼠标中键（滚轮）可以发起合成请求，在指定合成数量并配备足够大的合成存储器后即可发起合成请求：</p>
+<p style="text-indent: 0em;"><span class="figure"><img alt="正文预览-第11张图片" class="lazy" data-error="//www.mcmod.cn/images/loadfail.gif" data-height="240" data-src="https://www.dakang233.com/images/minecraft/tutorial07.gif" data-width="320" decoding="async" loading="lazy" src="https://www.dakang233.com/images/minecraft/tutorial07.gif"/><span class="figcaption">动力冲压机生产线自动化运行中</span></span></p>
+<p style="text-indent: 0em;">同理，现在你也可以编码所有可以制成金属板的配方成样板，然后放入这个样板供应器。这样所有的金属板都是可以自动合成的。</p>
+<p style="text-indent: 0em;">
+                                这个方法适用于所有<strong>一次</strong>就可以完成合成并且只需要用到物品这一种类型的配方。把动力冲压机换成其他的机器，比如<a href="https://www.mcmod.cn/item/347819.html" rel="noopener noreferrer" target="_blank">动力锯</a>、<a href="https://www.mcmod.cn/item/227810.html" rel="noopener noreferrer" target="_blank">动力合成器</a>、<a href="https://www.mcmod.cn/item/196532.html" rel="noopener noreferrer" target="_blank">鼓风机</a>、<a href="https://www.mcmod.cn/item/227794.html" rel="noopener noreferrer" target="_blank">石磨</a>、<a href="https://www.mcmod.cn/item/196534.html" rel="noopener noreferrer" target="_blank">粉碎轮</a>等，并更换为与之适配的输入和输出——比如对于动力合成器配方你需要木桶+黄铜漏斗+置物台+动力臂+过滤的黄铜漏斗来输入。
+                            </p>
+<h2 class="section-title level-2" id="ctm-title-jZpq5f3V">进阶案例：精密构件的自动化合成</h2>
+<p style="text-indent: 0em;">我们知道<a href="https://www.mcmod.cn/item/468510.html" rel="noopener noreferrer" target="_blank">精密构件</a>是机械动力里比较重要的一个资源，可以用来合成高级且方便的物品，比如<a href="https://www.mcmod.cn/item/227814.html" rel="noopener noreferrer" target="_blank">转速控制器</a>。但是合成的过程又比较麻烦，而且一次合成获得目标产物还是概率的（存在损耗），不像传统配方是精确的——只要有对应的原料就一定100%可以获得目标产物。这对于
+                                AE2 来说是一个挑战，因为 AE2 默认设计的配方是给定材料就一定能够获得产物。不过这是可以解决的——</p>
+<h3 class="section-title level-3" id="ctm-title-fvPedIQp">机械动力部分的搭建</h3>
+<p style="text-indent: 0em;">首先我们拉一个长度至少为 7
+                                的传送带，垂直放置在回流传送带上。在这个生产线传送带尽头——也就是和回流传送带相接的那一端上——放置一个黄铜隧道。在生产线传送带的第 3 - 5
+                                格上放置三个机械手。在生产线传送带开头位置放置一个木桶，并在木桶上放置一个黄铜漏斗。最终你应该得到如图所示的结构：</p>
+<p style="text-indent: 0em;"><span class="figure"><img alt="正文预览-第12张图片" class="lazy" data-error="//www.mcmod.cn/images/loadfail.gif" data-height="300" data-src="https://www.dakang233.com/images/minecraft/tutorial09.png" data-width="570" decoding="async" loading="lazy" src="https://www.dakang233.com/images/minecraft/tutorial09.png"/></span>为了满足精密构件的生产需求，我们进行简单的扩建：</p>
+<p style="text-indent: 0em;"><span class="figure"><img alt="正文预览-第13张图片" class="lazy" data-error="//www.mcmod.cn/images/loadfail.gif" data-height="300" data-src="https://www.dakang233.com/images/minecraft/tutorial11.png" data-width="570" decoding="async" loading="lazy" src="https://www.dakang233.com/images/minecraft/tutorial11.png"/><span class="figcaption">一个简单的精密构件生产线</span></span></p>
+<p style="text-indent: 0em;">
+                                黄铜隧道是确保只有是<strong>产物</strong>（也就是精密构件配方最终可能产出的物品，包括精密构件、钟、齿轮、铁粒……）可以进入到回流传送带（产物进入网络的传送带），否则进入右侧的循环处理传送带。配置两个大箱子是为了应对多个精密构件生产时可能导致的传送带堵死。
+                            </p>
+<p style="text-indent: 0em;">现在我们给产物出口面上的黄铜隧道配置<a href="https://www.mcmod.cn/item/227773.html" rel="noopener noreferrer" target="_blank">列表过滤器</a>：</p>
+<p style="text-indent: 0em;"><span class="figure"><img alt="正文预览-第14张图片" class="lazy" data-error="//www.mcmod.cn/images/loadfail.gif" data-height="220" data-src="https://www.dakang233.com/images/minecraft/tutorial12.png" data-width="600" decoding="async" loading="lazy" src="https://www.dakang233.com/images/minecraft/tutorial12.png"/><span class="figcaption">列表过滤器配置</span></span></p>
+<p style="text-indent: 0em;">然后放置在黄铜隧道的出口面（与回流传送带相接）上：</p>
+<p style="text-indent: 0em;"><span class="figure"><img alt="正文预览-第15张图片" class="lazy" data-error="//www.mcmod.cn/images/loadfail.gif" data-height="300" data-src="https://www.dakang233.com/images/minecraft/tutorial13.png" data-width="300" decoding="async" loading="lazy" src="https://www.dakang233.com/images/minecraft/tutorial13.png"/></span></p>
+<p style="text-indent: 0em; white-space: normal;">现在解释一下这个系统的运作方式：</p>
+<ul style="list-style-type: disc;">
+<li>
+<p style="text-indent: 0em; white-space: normal;">金板从木桶中被黄铜漏斗提取出来</p>
+</li>
+<li>
+<p style="text-indent: 0em; white-space: normal;">
+                                        金板进入三个机械手下方被第一次加工得到半成品的精密构件（机械手的材料来源在下一节）</p>
+</li>
+<li>
+<p style="text-indent: 0em; white-space: normal;">半成品的精密构件遇到黄铜隧道</p>
+</li>
+<li>
+<p style="text-indent: 0em; white-space: normal;">黄铜隧道过滤：<span style="text-indent: 0em;">半成品精密构件进入回到机械手的传送带，成品精密构件（精密构件、齿轮、时钟、铁粒、传动杆……）进入回流传送带</span>
+</p>
+</li>
+<li>
+<p style="text-indent: 0em; white-space: normal;">循环第2~4步四次</p>
+</li>
+<li>
+<p style="text-indent: 0em; white-space: normal;">完成</p>
+</li>
+</ul>
+<h3 class="section-title level-3" id="ctm-title-teFRipdq">子网络输入物流系统</h3>
+<p style="text-indent: 0em;">现在来配置 AE2
+                                的部分。首先放置一个样板供应器在木桶的上方，<strong>不要贴近木桶</strong>（至少保持一格距离），并设置为<strong>阻挡模式</strong>：</p>
+<p style="text-indent: 0em;"><span class="figure"><img alt="正文预览-第16张图片" class="lazy" data-error="//www.mcmod.cn/images/loadfail.gif" data-height="250" data-src="https://www.dakang233.com/images/minecraft/tutorial14.png" data-width="430" decoding="async" loading="lazy" src="https://www.dakang233.com/images/minecraft/tutorial14.png"/><span class="figcaption">设置为阻挡模式的 ME
+                                        样板供应器（显示为如图的图标）</span></span>设置为阻挡模式是为了防止 ME
+                                网络发送过多材料导致生产线堵死。接下来我们需要建立一个子网络，用于分发原料：</p>
+<p style="text-indent: 0em;"><span class="figure"><img alt="正文预览-第17张图片" class="lazy" data-error="//www.mcmod.cn/images/loadfail.gif" data-height="300" data-src="https://www.dakang233.com/images/minecraft/tutorial15.png" data-width="510" decoding="async" loading="lazy" src="https://www.dakang233.com/images/minecraft/tutorial15.png"/><span class="figcaption">原料运输子网络</span></span></p>
+<p style="text-indent: 0em;"><span style="color: rgb(0, 176, 80);">绿色框</span>内为 <a href="https://www.mcmod.cn/item/655776.html" rel="noopener noreferrer" target="_blank">ME
+                                    存储总线</a>（放置在三个机械手上方），<span style="color: rgb(255, 0, 0);">红色框</span>为<a href="https://www.mcmod.cn/item/655769.html" rel="noopener noreferrer" target="_blank">石英纤维</a>（与主网络的线缆/设备相连），<span style="color: rgb(255, 192, 0);">黄色框</span>为<a href="https://www.mcmod.cn/item/655633.html" rel="noopener noreferrer" target="_blank">面板型 ME 接口</a>（和样板供应器放在一起）。<span style="color: rgb(255, 0, 0);"><strong>注意：你不应该把这个子网络和主网络相连！</strong></span></p>
+<p style="text-indent: 0em;">
+                                请仔细检查是否有线缆与主网络的线缆/设备相连。注意：石英纤维<strong>不会触发频道传输</strong>，而是传输能量，因此子网络通过它不算和主网络连接。使用石英纤维可以非常方便地创建子网络。
+                            </p>
+<p style="text-indent: 0em;">
+                                现在为三个机械手的存储总线分别设置过滤。按精密构件里的机械手加工序列排序——第一个机械手的存储总线的过滤设置为齿轮，第二个机械手的存储总线的过滤设置为大齿轮，第三个机械手的存储总线的过滤设置为铁粒。当然，机械手也需要设置过滤——<strong>否则机械手会把合成材料放进传送带里</strong>，在底下没有物品的时候。同时最好木桶处的存储总线也设置过滤（金板），以防止意想不到的行为。
+                            </p>
+<p style="text-indent: 0em;">可以用之前我提到的技巧——直接从 JEI / EMI 拖动物品来设置过滤，而不需要提前拥有这个物品。</p>
+<p style="text-indent: 0em;">现在这个输入原料的简单物流系统就完成了。我来解释一下这个系统如何工作：</p>
+<ul style="list-style-type: disc;">
+<li>
+<p style="text-indent: 0em;">玩家发起合成请求</p>
+</li>
+<li>
+<p style="text-indent: 0em;">网络把原料送到用于制作精密构件的样板供应器处——<span style="text-indent: 0em;">也就是原料从样板供应器那里输入</span></p>
+</li>
+<li>
+<p style="text-indent: 0em;"><span style="text-indent: 0em;">样板供应器会先检查附近有没有可以输入的容器（前提是方块型且没有特意设置原料输入朝向）</span>
+</p>
+</li>
+<li>
+<p style="text-indent: 0em;"><span style="text-indent: 0em;">ME 接口是最近且唯一可用的容器（实际上 ME
+                                            接口在一般情况下代表的是它所在的子网络的整个存储空间）</span></p>
+</li>
+<li>
+<p style="text-indent: 0em;"><span style="text-indent: 0em;">样板供应器<strong>检查目标的网络存储是否为空</strong>（阻挡模式），如果是空，把材料输入到接口</span>
+</p>
+</li>
+<li>
+<p style="text-indent: 0em;"><span style="text-indent: 0em;">接口把材料<strong>存储</strong>到对应的存储总线管理的容器</span></p>
+</li>
+<li>
+<p style="text-indent: 0em;"><span style="text-indent: 0em;">——由于我们之前对其中三个存储总线（机械手的）做了过滤，因此这三个存储总线只能接受它们所允许的物品——齿轮、大齿轮、铁粒。</span>
+</p>
+</li>
+<li>
+<p style="text-indent: 0em;"><span style="text-indent: 0em;">剩下的物品会被存储到另外那个没有设置过滤的存储总线——也就是木桶</span></p>
+</li>
+<li>
+<p>完成物流传输</p>
+</li>
+</ul>
+<p style="text-indent: 0em;">注意理解：ME 接口表示「网络的存储空间」。那么什么是网络的存储空间呢？存储总线、ME
+                                驱动器都算，也就是网络存物品的地方。ME 接口的默认行为就是把输入到它的物品送回到网络存储空间里，因此我们可以利用这一点来进行物流传输。因此我们发现了一种物流方式：ME
+                                接口（输入） + ME 存储总线（输出）。我们称这种物流形式为 AE2 的<strong>被动</strong>物流传输。</p>
+<p style="text-indent: 0em;">当然，AE2 的物流方式还有其他形式的，比如 ME 输入总线 + ME 存储总线；ME 存储总线 + ME 输出总线。这些属于
+                                AE2 的主动物流传输。这里就不展开了，感兴趣的读者可以自行探索实践。</p>
+<p style="text-indent: 0em;">不要把 ME 接口和 ME 存储总线 / ME
+                                驱动器混淆。一个简单的理解是：接口是替身，存储总线/驱动器才是本体。没了本体，接口也就无法发挥作用了（当然接口本身也有一个内部存储空间，没电时 /
+                                没有空闲的网络存储空间时接口自身可以存放物品）。也就是为什么叫接口——是外部的机器通过 ME 接口操作接口所在网络的存储空间。当然，如果 ME
+                                接口有配置保持某个物品多少，这个时候 ME 接口就不表示网络存储空间了。更多信息可以去查看 <a href="https://www.mcmod.cn/item/655633.html" rel="noopener noreferrer" target="_blank">ME 接口本身的介绍</a>。</p>
+<h3 class="section-title level-3" id="ctm-title-QsSmTR35">编写样板</h3>
+<p style="text-indent: 0em;">在样板编码终端里，你可以直接通过 JEI / EMI
+                                的功能把精密构件的配方填充到样板里。这个样板是<strong>处理样板</strong>。如果用 EMI 可以直接精准地填充样板。你也可以手动拖动物品来制作样板。<span style="color: rgb(255, 0, 0);">一个重要的技巧是<strong>鼠标中间样板里的物品可以设置这个物品的数量</strong></span>。这个技巧其实前面讲过了，在发起某个物品的自动合成的时候也可以使用鼠标中键（尤其是这个物品在网络里有存量的时候）。因此如果你是用的
+                                JEI 可能会发现填充的物品数量都是 1 个，但实际上我们需要的样板是这样的：</p>
+<p style="text-indent: 0em;"><span class="figure"><img alt="正文预览-第18张图片" class="lazy" data-error="//www.mcmod.cn/images/loadfail.gif" data-height="170" data-src="https://www.dakang233.com/images/minecraft/tutorial16.png" data-width="380" decoding="async" loading="lazy" src="https://www.dakang233.com/images/minecraft/tutorial16.png"/></span></p>
+<p style="text-indent: 0em;">鼠标中键后你应该得到类似这样的界面：<br/><span class="figure"><img alt="正文预览-第19张图片" class="lazy" data-error="//www.mcmod.cn/images/loadfail.gif" data-height="230" data-src="https://www.dakang233.com/images/minecraft/tutorial17.png" data-width="400" decoding="async" loading="lazy" src="https://www.dakang233.com/images/minecraft/tutorial17.png"/><span class="figcaption">鼠标中键得到的选择数量界面</span></span></p>
+<p style="text-indent: 0em;">
+                                在得到正确的样板配方以后，其实这个样板的设置还没有结束。回想一下开头我所说的，精密构件的合成是<strong>概率性的</strong>。因此我们需要翻倍样板里的所有原料物品的数量，比如我们把所有原料物品的数量乘以
+                                4（鼠标中键打开的界面里输入物品数量可以是一个数学表达式，比如5*4），但是保持输出产物（精密构件）的数量不变：</p>
+<p style="text-indent: 0em;"><span class="figure"><img alt="正文预览-第20张图片" class="lazy" data-error="//www.mcmod.cn/images/loadfail.gif" data-height="170" data-src="https://www.dakang233.com/images/minecraft/tutorial19.png" data-width="380" decoding="async" loading="lazy" src="https://www.dakang233.com/images/minecraft/tutorial19.png"/><span class="figcaption">原料物品数量翻倍后的样板</span></span></p>
+<p style="text-indent: 0em;">这其实利用了大数定律。精密构件合成的成功概率是 80%，也就是说失败概率是
+                                20%。现在我们在样板里的设置其实在表述一个命题：我们重复做四次精密构件，至少有一次是成功的。现在制作失败的概率是 0.2^4 =
+                                0.0016（万分之十六），已经很低了。通过利用大数定律来保证我们制作精密构件至少有一个是成功的（工程意义上）。通过增加输入规模，将概率性产出转化为工程上可接受的稳定输出，从而满足
+                                AE2 自动合成系统对「确定性」的要求。</p>
+<p style="text-indent: 0em;">现在把它放入到样板供应器里，这样精密构件的自动化的完成了。</p>
+<h4 class="section-title level-4" id="ctm-title-v2k8IxaO">可能存在的小问题</h4>
+<p style="text-indent: 0em; white-space: normal;">
+                                在实际生产中，因为齿轮、大齿轮、铁粒的数量比较多，而我们标记的精密构件数量比较少，因此可能导致实际上合成完成以后 ME
+                                网络不再向机械手提供原材料，导致剩下的半成品精密构件无法完成合成。这个时候我们只需要在输入物流系统中间添加一个缓冲容器：</p>
+<p style="text-indent: 0em; white-space: normal;"><span class="figure"><img alt="正文预览-第21张图片" class="lazy" data-error="//www.mcmod.cn/images/loadfail.gif" data-height="300" data-src="https://www.dakang233.com/images/minecraft/tutorial23.png" data-width="570" decoding="async" loading="lazy" src="https://www.dakang233.com/images/minecraft/tutorial23.png"/><span class="figcaption">打断在机械手存储总线和ME接口之间的连接并使用一个容器来间接连接</span></span><br/></p>
+<p style="text-indent: 0em;">这个箱子的右侧下方是一个存储总线，左侧下方是一个<a href="https://www.mcmod.cn/item/655777.html" rel="noopener noreferrer" target="_blank">输入总线</a>，箱子左下方和右下方中间的线缆方块的连接使用了<a href="https://www.mcmod.cn/item/655769.html" rel="noopener noreferrer" target="_blank">石英纤维</a>。当然，输入到这个箱子的存储总线也要设置过滤，以防止金板被输入到这个箱子（可以设置黑名单或者白名单；黑名单需要给存储总线安装<a href="https://www.mcmod.cn/item/655560.html" rel="noopener noreferrer" target="_blank">反相卡</a>）。如果觉得输入总线速度过慢可以安装加速卡。也可以替换为机械动力的物流方法（比如额外传送带+黄铜隧道；或者动力臂+黄铜漏斗+置物台），不过可能会比较麻烦。
+                            </p>
+<h3 class="section-title level-3" id="ctm-title-QAroOoyS">完成精密构件合成自动化的其他一般必须的自动化</h3>
+<p style="text-indent: 0em;">你可能会发现在你尝试发起精密构件的自动合成的时候会遇到这个问题：</p>
+<p style="text-indent: 0em;"><span class="figure"><img alt="正文预览-第22张图片" class="lazy" data-error="//www.mcmod.cn/images/loadfail.gif" data-height="300" data-src="https://www.dakang233.com/images/minecraft/tutorial20.png" data-width="368" decoding="async" loading="lazy" src="https://www.dakang233.com/images/minecraft/tutorial20.png"/><span class="figcaption">合成计划显示错误</span></span>这是因为你的网络不知道这些物品怎么获得 /
+                                制作，同时你的网络也没有这些物品。一个简单的解决办法就是你手动给网络提供这些材料，这样一来你就可以正常发起合成了。</p>
+<p style="text-indent: 0em;">
+                                但更优雅的方式是让网络自己去合成这些的材料。比如金板，其实我们刚才已经实现了金板的制作过程的自动化，我们只需要编写金锭→金板的样板并放入到动力冲压机生产线的样板供应器就可以了。这个时候网络就会用更基础的材料区合成中间产物最终得到最终产物。因此基础原料是必须有的。这就像我们所有的加工品都是有基础原料合成得到的，没有基础材料怎么做；你自己手动做这些物品也是从基础材料一步一步做来的，只是我们现在把这个过程交给网络来自动化了。
+                            </p>
+<p style="text-indent: 0em;">像铁粒、大齿轮、齿轮这些物品，都是工作台配方，因此可以使用 AE2 里的分子装配室进行自动化合成。<a href="https://www.mcmod.cn/item/655652.html" rel="noopener noreferrer" target="_blank">分子装配室的详细信息</a>。</p>
+<p style="text-indent: 0em;">只需要将样板供应器和分子装配室贴在一起放即可：</p>
+<p style="text-indent: 0em;"><span class="figure"><img alt="正文预览-第23张图片" class="lazy" data-error="//www.mcmod.cn/images/loadfail.gif" data-height="300" data-src="https://www.dakang233.com/images/minecraft/tutorial21.png" data-width="350" decoding="async" loading="lazy" src="https://www.dakang233.com/images/minecraft/tutorial21.png"/><span class="figcaption">分子装配室自动化合成</span></span></p>
+<p style="text-indent: 0em;">
+                                然后我们只需要在样板编码终端里选择工作台配方，把铁粒、齿轮和大齿轮的配方分别编码成样板，放入到分子装配室的样板供应器，这样就完成了自动化（样板供应器和分子装配室有适配，不需要额外配置）。AE2
+                                支持支持自动拆解配方，因此你可以把合成某个物品的配方 / 方法都写成样板，并放入到对应的样板供应器里，AE2 会自动计算怎么合成并调用对应的样板供应器（机器）来合成。</p>
+<p style="text-indent: 0em;">一个比较高效的放置方法：</p>
+<p style="text-indent: 0em;"><span class="figure"><img alt="正文预览-第24张图片" class="lazy" data-error="//www.mcmod.cn/images/loadfail.gif" data-height="300" data-src="https://www.dakang233.com/images/minecraft/tutorial22.png" data-width="300" decoding="async" loading="lazy" src="https://www.dakang233.com/images/minecraft/tutorial22.png"/><span class="figcaption">比较高效利用频道和合成性能的放置方法</span></span></p>
+<p style="text-indent: 0em;">通过利用 ME P2P，每个样板供应器列最多可以放置 8 个样板供应器，与之对应每列也有 8
+                                个分子装配室（分子装配室不占用频道），所以有四列（32个频道），刚好利用完一个 P2P 频道。这个时候你可能需要用样板管理终端来管理这么多的样板供应器了。P2P 的简单用法：在
+                                <a href="https://www.mcmod.cn/item/655630.html" rel="noopener noreferrer" target="_blank">ME 控制器</a>处放置一个 <a href="https://www.mcmod.cn/item/655793.html" rel="noopener noreferrer" target="_blank">ME P2P
+                                    通道</a>方块（贴着控制器），然后使用一个<a href="https://www.mcmod.cn/item/655499.html" rel="noopener noreferrer" target="_blank">内存卡</a>潜行右键刚才放置的 ME P2P
+                                通道方块。然后你就可以用这张内存卡右键另外四个放置在分子装配室塔的 ME P2P 通道了。</p>
+<p style="text-indent: 0em;">分子装配室支持工作台配方、锻造台配方和切石机配方。</p>
+<h2 class="section-title level-2" id="ctm-title-q4DCmaAz">流体物体混合配方自动化：动力搅拌器</h2>
+<p style="text-indent: 0em;">［待补充，限于时间精力。其实刚才提到的被动物流系统就可以做到这一点，因为 AE2
+                                的物流系统是<strong>支持多类型物品</strong>的，可以同时接受物品流体的输入，然后输出（存储总线）也可以，基本思想是不变的；回流的时候物品可以走传送带，流体可以用
+                                ME 输入总线回收；样板里原样标记流体即可］</p>
+</div></main></div><p style="margin:18px 4px 0; color:var(--muted); font-size:13px;"></p></div>
+<script>
+(() => {
+  const toc = document.querySelector('.toc');
+  const tocLinks = Array.from(document.querySelectorAll('.toc a[href^="#"]'));
+  const headings = Array.from(document.querySelectorAll('.article .section-title[id]'));
+  if (!tocLinks.length || !headings.length) return;
+
+  const linkById = new Map(
+    tocLinks.map(a => [decodeURIComponent(a.getAttribute('href').slice(1)), a])
+  );
+
+  function setActive(id) {
+    tocLinks.forEach(a => a.classList.remove('active'));
+    const active = linkById.get(id);
+    if (!active) return;
+    active.classList.add('active');
+
+    if (toc) {
+      const aRect = active.getBoundingClientRect();
+      const tocRect = toc.getBoundingClientRect();
+      const inside = aRect.top >= tocRect.top && aRect.bottom <= tocRect.bottom;
+      if (!inside) {
+        active.scrollIntoView({ block: 'center', behavior: 'smooth' });
+      }
+    }
+  }
+
+  function currentHeading() {
+    const offset = 120;
+    let current = headings[0];
+    for (const h of headings) {
+      const top = h.getBoundingClientRect().top;
+      if (top - offset <= 0) current = h;
+      else break;
+    }
+    return current;
+  }
+
+  let raf = 0;
+  function onScroll() {
+    if (raf) return;
+    raf = requestAnimationFrame(() => {
+      raf = 0;
+      const h = currentHeading();
+      if (h) setActive(h.id);
+    });
+  }
+
+  window.addEventListener('scroll', onScroll, { passive: true });
+  window.addEventListener('resize', onScroll);
+
+  tocLinks.forEach(a => {
+    a.addEventListener('click', (e) => {
+      const id = decodeURIComponent(a.getAttribute('href').slice(1));
+      const h = document.getElementById(id);
+      if (h) {
+        e.preventDefault();
+        h.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        history.replaceState(null, '', `#${encodeURIComponent(id)}`);
+        setActive(id);
+      }
+    });
+  });
+
+  const initial = location.hash ? decodeURIComponent(location.hash.slice(1)) : null;
+  if (initial && document.getElementById(initial)) {
+    setActive(initial);
+  } else {
+    setActive(currentHeading().id);
+  }
+
+  if ('IntersectionObserver' in window) {
+    const observer = new IntersectionObserver((entries) => {
+      const visible = entries
+        .filter(entry => entry.isIntersecting)
+        .sort((a, b) => a.boundingClientRect.top - b.boundingClientRect.top);
+      if (visible.length) setActive(visible[0].target.id);
+    }, {
+      root: null,
+      rootMargin: '-20% 0px -65% 0px',
+      threshold: [0, 0.1, 0.25, 0.5, 0.75, 1]
+    });
+    headings.forEach(h => observer.observe(h));
+  }
+})();
+</script>
+</body></html>
