@@ -34,6 +34,13 @@ def verify(root):
         tables += len(document.xpath("//article//table"))
         resources = document.xpath("//a/@href|//img/@src|//script/@src|//link[@rel='stylesheet']/@href")
         links.extend((file, link) for link in resources)
+    hammer_chapter = documents["chapter-01.html"]
+    figure = hammer_chapter.xpath("//figure[@id='figure-1-4-1']/a/img")
+    assert len(figure) == 1, "Missing annotated Hammer figure"
+    assert 1.47 < int(figure[0].get("width")) / int(figure[0].get("height")) < 1.49, (
+        "Hammer figure crop must include the right-side callouts"
+    )
+    assert hammer_chapter.xpath("//p/a[@href='./chapter-01.html#figure-1-4-1']"), "Broken Hammer figure cross-reference"
     search_file = (root / "search-data.js").read_text(encoding="utf-8").strip()
     records = json.loads(search_file.removeprefix("window.BOOK_SEARCH = ").removesuffix(";"))
     links.extend(("index.html", row[0]) for row in records)

@@ -15,6 +15,8 @@ SUBTITLE = "从入门到发布"
 FULL = f"{TITLE}：{SUBTITLE}"
 VERSION = "v0.8.1"
 CANONICAL = "https://docs.dakang233.com/l4d2-book/"
+HAMMER_FIGURE_LABEL = "图1-4-1"
+HAMMER_FIGURE_ID = "figure-1-4-1"
 EXTERNAL_URL = re.compile(r"https?://[^\s<>\u3000-\u9fff（）。，；「」『』]+")
 SECTION_NUMBER = re.compile(r"^(\d+(?:\.\d+)+)(?![\d.])")
 CHAPTER_NUMBER = re.compile(r"^第\s*(\d+)\s*章")
@@ -275,6 +277,8 @@ class Renderer:
         kids = [r for c in node["children"] for r in self.runs(c, inline)]
         if role == "Link" and (node.get("url") or node.get("target_page")):
             href = node.get("url") or self.page_url(node.get("target_page"))
+            if keys(text_of(node)) == HAMMER_FIGURE_LABEL:
+                href = f"./chapter-01.html#{HAMMER_FIGURE_ID}"
             if href and (href.startswith(("./", "https://", "http://", "mailto:"))):
                 content = self.flow(kids, link_urls=False)
                 if content.strip():
@@ -563,8 +567,12 @@ class Renderer:
                 if figures:
                     caption = self.flow(self.runs(nodes[i + 1]))
                     alt = clean_title(text_of(nodes[i + 1]))
+                    attrs = ""
+                    if keys(alt) == HAMMER_FIGURE_LABEL:
+                        attrs = f' id="{HAMMER_FIGURE_ID}"'
+                        alt += "，Hammer 界面和编号 ① 至 ⑨ 的引线标注"
                     images = "".join(self.figure(figure, alt=alt) for figure in figures)
-                    body.append(marker + f"<figure>{images}<figcaption>{caption}</figcaption></figure>")
+                    body.append(marker + f"<figure{attrs}>{images}<figcaption>{caption}</figcaption></figure>")
                     i += 2
                     continue
             if node["role"] == "图片":

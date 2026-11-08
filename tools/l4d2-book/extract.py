@@ -16,6 +16,14 @@ KID = re.compile(r"<<.*?>>|(\d+)\s+\d+\s+R|(\d+)", re.S)
 LIGATURES = str.maketrans({"ﬁ": "fi", "ﬂ": "fl", "ﬀ": "ff", "ﬃ": "ffi", "ﬄ": "ffl"})
 
 
+# On PDF page 13, the Figure tag covers only the Hammer screenshot.
+# The original layout extends its nine callouts into the right margin.
+# Match both the PDF page and the tagged bounds before applying the crop.
+FIGURE_CROPS = {
+    (13, (76, 295, 474, 607)): (74, 295, 538, 609),  # 图 1-4-1
+}
+
+
 def clean(text):
     return unicodedata.normalize("NFC", text.translate(LIGATURES)).replace("\u00ad", "").replace("\u200b", "")
 
@@ -148,6 +156,8 @@ class Extraction:
                     box = [min(b[0] for b in boxes), min(b[1] for b in boxes),
                            max(b[2] for b in boxes), max(b[3] for b in boxes)]
             if box:
+                tagged_bounds = tuple(round(coord) for coord in box)
+                box = FIGURE_CROPS.get((page, tagged_bounds), box)
                 node["figure"] = self.image(page, box)
                 node["page"] = page
                 node["box"] = box
