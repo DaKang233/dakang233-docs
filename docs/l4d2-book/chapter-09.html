@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="逆向工程 · 精通求生之路地图制作。大康编著的求生之路 2 地图制作教程。">
+<link rel="canonical" href="https://docs.dakang233.com/l4d2-book/chapter-09.html">
+<link rel="stylesheet" href="./book.css">
+<title>逆向工程 · 精通求生之路地图制作</title>
+<script defer src="./search-data.js"></script>
+<script defer src="./book.js"></script>
+</head>
+<body class="">
+<a class="skip-link" href="#main">跳到正文</a>
+<header class="topbar">
+  <div class="topbar-inner"><a class="wordmark" href="./index.html"><span aria-hidden="true" class="brand-icon">▦</span><span>大康233<span class="brand-sep"> / </span><span class="brand-book">地图制作手册</span></span></a>
+    <nav aria-label="站点导航"><a href="./index.html#contents">全书目录</a><button type="button" id="open-search" aria-haspopup="dialog" hidden><span aria-hidden="true">⌕</span> <span>搜全书</span> <kbd>Ctrl K</kbd></button></nav>
+  </div>
+</header>
+
+<div class="reader-layout">
+  <aside class="book-sidebar"><nav aria-label="全书章节"><h2>全书章节</h2><ul class="chapter-nav"><li><a href="./front.html"><span>卷首</span>前言与出版信息</a></li><li><a href="./chapter-01.html"><span>第 1 章</span>求生之路及起源引擎</a></li><li><a href="./chapter-02.html"><span>第 2 章</span>地图制作流程概述</a></li><li><a href="./chapter-03.html"><span>第 3 章</span>你的第一个求生之路地图</a></li><li><a href="./chapter-04.html"><span>第 4 章</span>导航网格与AI系统</a></li><li><a href="./chapter-05.html"><span>第 5 章</span>求生之路2地图制作基础教程</a></li><li><a href="./chapter-06.html"><span>第 6 章</span>关卡设计与优化</a></li><li><a href="./chapter-07.html"><span>第 7 章</span>求生之路2脚本</a></li><li><a href="./chapter-08.html"><span>第 8 章</span>求生之路2地图制作实例</a></li><li><a href="./chapter-09.html" aria-current="page"><span>第 9 章</span>逆向工程</a></li><li><a href="./chapter-10.html"><span>第 10 章</span>求生之路2实体列表</a></li><li><a href="./appendix.html"><span>附录</span>工具与参考资料</a></li></ul></nav></aside>
+  <main id="main">
+    <div class="chapter-header" id="chapter-09"><div class="breadcrumb"><a href="./index.html#contents">全书目录</a><span aria-hidden="true">/</span>第 9 章</div><h1>逆向工程</h1></div>
+    <details class="mobile-sections"><summary>本篇目录</summary><ul><li class="toc-level-2"><a href="#heading-5396">免责声明</a></li><li class="toc-level-2"><a href="#section-9-1">9.1 逆向工程</a></li></ul></details>
+    <article class="book-content" aria-label="逆向工程"><span class="page-anchor" id="page-159"></span><p class='chapter-intro'>本章节讲述如何对《求生之路2》中的地图进行逆向工程。免责声明另附。</p>
+<p class='chapter-intro'>对地图进行逆向工程，我们可以得到可以用Hammer编辑器打开的地图工程文件。这样，我们就可以学习地图中的关卡设计，了解各种地图机制是如何实现的。尤其是当你在游玩地图时发现一些有趣的机制、机关、设计、功能等时，作为地图作者，你肯定会迫不及待地想知道这是如何实现的，那么这时逆向工程就派上用场了。</p>
+<span class="page-anchor" id="page-160"></span><h2 id="heading-5396">免责声明<a class="heading-link" href="#heading-5396" aria-label="本节链接">#</a></h2>
+<p>本章节旨在提供《求生之路2》游戏地图逆向工程（如反编译地图）方面的技术参考，仅供个人学习和研究之用。通过阅读和使用本章节中的内容，您承诺将其用于合法且符合道德的用途。请注意以下事项：</p>
+<ul class="book-list" role="list"><li><span class="list-label">•</span><div>合法性：逆向工程和反编译可能违反某些国家或地区的法律规定。特别是，反编译受版权保护的内容可能涉及侵犯知识产权的风险。请务必在您所在的司法管辖区内，了解并遵守相关法律法规。您应自行承担因违法行为而产生的任何后果。</div></li><li><span class="list-label">•</span><div>知识产权：本章节所涉及的内容可能与Valve Corporation或其他第三方的知识产权相关。未经授权，不得将教程中的技术用于破解、复制、修改或分发《求生之路2》的受保护地图或其他内容。</div></li><li><span class="list-label">•</span><div>风险：反编译和修改地图可能会导致游戏数据损坏、不稳定或其他技术问题。作者不对因使用本章节中的信息或技术而造成的任何数据丢失、游戏问题或其他损害负责。</div></li><li><span class="list-label">•</span><div>责任限制：本章节仅作为技术学习和研究的指导，作者不对教程中可能存在的错误、不准确或遗漏承担责任。使用本章节所提供的信息完全由您自行决定，并由您自行承担风险。</div></li><li><span class="list-label">•</span><div>社区规范：请尊重游戏开发者和社区的工作成果，避免使用本章节中所学的技术从事任何违反游戏社区规范或法律的活动。</div></li><li><span class="list-label">•</span><div>合法用途：您同意将本章节仅用于个人学习、研究和合法测试目的，严禁将其用于任何非法、恶意或破坏性行为。</div></li></ul>
+<p>通过继续浏览使用本章节，您确认已经阅读并同意以上免责声明内容。我们建议您在从事任何逆向工程或反编译活动之前，咨询法律专业人士，以确保您的行为符合相关法律和道德要求。</p>
+<span class="page-anchor" id="page-161"></span><h2 id="section-9-1">9.1 逆向工程<a class="heading-link" href="#section-9-1" aria-label="本节链接">#</a></h2>
+<p>逆向工程（Reverse Engineering），又称反向工程，是一种技术仿造过程，即对一项目标产品进行逆向分析及研究，从而演绎并得出该产品的处理流程、组织结构、功能性能规格等设计要素，以制作出功能相近，但又不完全一样的产品。</p>
+<p>在求生之路地图制作中，逆向工程通常指对现有游戏地图进行分析（.bsp文件），得到能够使用Hammer打开的地图源文件（.vmf文件），学习其设计思路和技巧。通常把这个过程称为反编译（decompiling）。</p>
+<p>当你发现一个地图中有一些好的机关设计要素，你想要了解它的原理时，就需要进行逆向工程，得到其工程文件，然后就能具体分析并理解；你发现某个地图的场景设计特别不错，想要学习借鉴的时候也可以用到逆向工程；你想要某个地图中的某些资源时也需要逆向工程。</p>
+<p>但是，逆向工程是有局限性的。虽然反编译地图对学习和分析很有帮助，但它们并不适合直接修改后重新发布。反编译后的地图往往会有数据丢失，尤其是在复杂几何形状或某些特定实体（如func_viscluster）上。这使得反编译后的地图不适合作为直接的复制品，原始的VMF文件仍然是最理想的修改和再编译来源。</p>
+<p>根据VDC的解释，未经许可或不提供出处的情况下，发布他人地图的复制品、修改版或类似地图可能被视为对原作者的不尊重，并且在许多情况下会被认为是版权侵权。侵犯版权可能会带来法律后果，具体取决于地图的来源。为了尊重他人的创作劳动和避免法律问题，地图作者应当获得原作者的许可，或者在发布时注明来源和归属。</p>
+<p>此外，尽管有方法可以防止地图被完全反编译（如混淆纹理、将实体或VScript保留在服务器端、混淆BSP文件），但这些方法较少被使用。大多数反编译地图的人这样做是为了学习，而不是为了窃取他人的创作。</p>
+<p>逆向工程最有价值的地方在于它为制作者提供了学习和测量的机会，而非直接复制他人的劳动成果。在学习过程中，通过分析地图的关卡设计、实体布局和优化策略，制作者可以提高自己的制作水平。但应避免将这些学习成果用于未经授权的复制或发布。逆向工程的目的是为社区贡献，而不是侵害他人的版权。</p>
+<p>在地图制作者社区中，保持对他人创作的尊重至关重要。虽然技术手段允许我们反编译并分析地图，但这种行为应当限于学习和改进自己的技术，而非盗用。社区普遍不鼓励未经许可发布修改后的地图，因为这可能伤害原作者的权利和创作热情。</p></article>
+    <nav class="chapter-pager" aria-label="相邻篇章"><a href="./chapter-08.html"><small>← 上一篇</small>求生之路2地图制作实例</a><a href="./chapter-10.html"><small>下一篇 →</small>求生之路2实体列表</a></nav>
+  </main>
+  <aside class="section-sidebar"><nav aria-label="本篇目录"><h2>本篇目录</h2><ul><li class="toc-level-2"><a href="#heading-5396">免责声明</a></li><li class="toc-level-2"><a href="#section-9-1">9.1 逆向工程</a></li></ul></nav></aside>
+</div>
+<footer class="site-footer"><div><span>大康233 · 精通求生之路地图制作</span><span>网页读本 · v0.8.1</span></div></footer>
+<dialog id="search" aria-labelledby="search-title">
+  <div class="dialog-head"><h2 id="search-title">搜索全书</h2><form method="dialog"><button type="submit" aria-label="关闭搜索">×</button></form></div>
+  <label for="search-input" class="sr-only">搜索词</label><input id="search-input" type="search" placeholder="章节、命令、实体名…" autocomplete="off">
+  <p id="search-status" role="status"></p><ol id="search-results"></ol>
+</dialog>
+</body>
+</html>

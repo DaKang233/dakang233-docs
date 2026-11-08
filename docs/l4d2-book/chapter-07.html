@@ -1,0 +1,399 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="求生之路2脚本 · 精通求生之路地图制作。大康编著的求生之路 2 地图制作教程。">
+<link rel="canonical" href="https://docs.dakang233.com/l4d2-book/chapter-07.html">
+<link rel="stylesheet" href="./book.css">
+<title>求生之路2脚本 · 精通求生之路地图制作</title>
+<script defer src="./search-data.js"></script>
+<script defer src="./book.js"></script>
+</head>
+<body class="">
+<a class="skip-link" href="#main">跳到正文</a>
+<header class="topbar">
+  <div class="topbar-inner"><a class="wordmark" href="./index.html"><span aria-hidden="true" class="brand-icon">▦</span><span>大康233<span class="brand-sep"> / </span><span class="brand-book">地图制作手册</span></span></a>
+    <nav aria-label="站点导航"><a href="./index.html#contents">全书目录</a><button type="button" id="open-search" aria-haspopup="dialog" hidden><span aria-hidden="true">⌕</span> <span>搜全书</span> <kbd>Ctrl K</kbd></button></nav>
+  </div>
+</header>
+
+<div class="reader-layout">
+  <aside class="book-sidebar"><nav aria-label="全书章节"><h2>全书章节</h2><ul class="chapter-nav"><li><a href="./front.html"><span>卷首</span>前言与出版信息</a></li><li><a href="./chapter-01.html"><span>第 1 章</span>求生之路及起源引擎</a></li><li><a href="./chapter-02.html"><span>第 2 章</span>地图制作流程概述</a></li><li><a href="./chapter-03.html"><span>第 3 章</span>你的第一个求生之路地图</a></li><li><a href="./chapter-04.html"><span>第 4 章</span>导航网格与AI系统</a></li><li><a href="./chapter-05.html"><span>第 5 章</span>求生之路2地图制作基础教程</a></li><li><a href="./chapter-06.html"><span>第 6 章</span>关卡设计与优化</a></li><li><a href="./chapter-07.html" aria-current="page"><span>第 7 章</span>求生之路2脚本</a></li><li><a href="./chapter-08.html"><span>第 8 章</span>求生之路2地图制作实例</a></li><li><a href="./chapter-09.html"><span>第 9 章</span>逆向工程</a></li><li><a href="./chapter-10.html"><span>第 10 章</span>求生之路2实体列表</a></li><li><a href="./appendix.html"><span>附录</span>工具与参考资料</a></li></ul></nav></aside>
+  <main id="main">
+    <div class="chapter-header" id="chapter-07"><div class="breadcrumb"><a href="./index.html#contents">全书目录</a><span aria-hidden="true">/</span>第 7 章</div><h1>求生之路2脚本</h1></div>
+    <details class="mobile-sections"><summary>本篇目录</summary><ul><li class="toc-level-2"><a href="#section-7-1">7.1 VScript</a></li><li class="toc-level-3"><a href="#section-7-1-1">7.1.1 使用VScript的游戏/软件</a></li><li class="toc-level-3"><a href="#section-7-1-2">7.1.2 VScript到底意味着什么？</a></li><li class="toc-level-2"><a href="#section-7-2">7.2 Squirrel</a></li><li class="toc-level-3"><a href="#section-7-2-1">7.2.1 文件格式</a></li><li class="toc-level-3"><a href="#section-7-2-2">7.2.2 数据类型</a></li><li class="toc-level-2"><a href="#section-7-3">7.3 求生之路2脚本</a></li><li class="toc-level-3"><a href="#section-7-3-1">7.3.1 主要用途</a></li></ul></details>
+    <article class="book-content" aria-label="求生之路2脚本"><span class="page-anchor" id="page-139"></span>
+<p class='chapter-intro'>脚本（VScript）是起源引擎在《求生之路2》中首次引入的新系统，是一种用于脚本编程的虚拟机。它是一个强大的自定义系统，允许我们实现各种高级功能。</p>
+<span class="page-anchor" id="page-140"></span><h2 id="section-7-1">7.1 VScript<a class="heading-link" href="#section-7-1" aria-label="本节链接">#</a></h2>
+<p>VScript，在《求生之路2》中首次引入，在后来的更新中被移植回了《军团要塞2》，是一种用于脚本编程的虚拟机，它在起源引擎和起源2引擎与外部脚本之间充当一个抽象的绑定层。</p>
+<p>根据Alien Swarm - SDK（异形丛生-SDK）我们可以推知，以下的脚本语言已经或者在不久的将来能够得到支持：Squirrel、Lua、Gamemonkey、Python。</p>
+<p>脚本文件放置于游戏目录内的scripts/vscripts/文件夹中。</p>
+<h3 id="section-7-1-1">7.1.1 使用VScript的游戏/软件<a class="heading-link" href="#section-7-1-1" aria-label="本节链接">#</a></h3>
+<ul class="book-list" role="list"><li><span class="list-label">1.</span><div>Squirrel<img src="./figures/7d4812ad023b6c7a23cb.webp" width="29" height="30" alt="" loading="lazy" decoding="async" class="inline-image" style="--figure-width:25px"></div></li><li><span class="list-label">•</span><div>《军团要塞2》</div></li><li><span class="list-label">•</span><div>《求生之路2》</div></li><li><span class="list-label">•</span><div>《异形丛生》</div></li><li><span class="list-label">•</span><div>《传送门2》</div></li><li><span class="list-label">•</span><div>《传送门 2：社区特供版》（Portal 2: Community Editon）</div></li><li><span class="list-label">•</span><div>起源电影制作器（Source Film Maker）（仅存在于《军团要塞2》的SFM版本中）</div></li><li><span class="list-label">•</span><div>《反恐精英：全球攻势》</div></li><li><span class="list-label">•</span><div>Contagion</div></li><li><span class="list-label">•</span><div>Nuclear Dawn</div></li><li><span class="list-label">•</span><div>Titanfall</div></li><li><span class="list-label">•</span><div>Alien Swarm: Reactive Drop</div></li><li><span class="list-label">•</span><div>Mapbase</div></li><li><span class="list-label">2.</span><div>Lua<img src="./figures/00e37850f8fb8b4d0c05.webp" width="36" height="36" alt="" loading="lazy" decoding="async" class="inline-image" style="--figure-width:25px"></div></li><li><span class="list-label">•</span><div>《传送门2》（仅限于客户端/用户界面）</div></li><li><span class="list-label">•</span><div>Dota 2</div></li><li><span class="list-label">•</span><div>Garry&#x27;s Mod</div></li><li><span class="list-label">•</span><div>SteamVR Home</div></li><li><span class="list-label">•</span><div>《半衰期：爱莉克斯》（Half-Life: Alyx）</div></li><li><span class="list-label">•</span><div>一般的起源2游戏</div></li><li><span class="list-label">•</span><div>Jabroni Brawl: Episode 3</div></li><li><span class="list-label">3.</span><div>Python<img src="./figures/dc1f998e09f5c3a4756f.webp" width="24" height="24" alt="" loading="lazy" decoding="async" class="inline-image" style="--figure-width:25px"></div></li><li><span class="list-label">•</span><div>起源电影制作器</div></li></ul>
+<span class="page-anchor" id="page-141"></span><h3 id="section-7-1-2">7.1.2 VScript到底意味着什么？<a class="heading-link" href="#section-7-1-2" aria-label="本节链接">#</a></h3>
+<p>VScript，也就是游戏里为创作者提供一套脚本系统，可以让创作者在代码允许的情况下实现更高自由度的创作。我们知道，游戏本来也是代码写的，那自然用代码来写、为自己的地图新增功能是理所应当的。</p>
+<p>VScript的存在让我们可以直接通过官方的各种API来直接与游戏交互，而游戏能够直接读取这些脚本来运行我们所想要的代码，自然能够实现许多功能，而不仅仅只是局限于游戏内的各种实体。因为实体没有的功能，我们可以代码写出来呀。实体本质上也是内置于游戏引擎内的一套代码。</p>
+<p>所以直接掌控代码当然是自由度最高的方式，VScript进一步解放了创作者的创造力。</p>
+<span class="page-anchor" id="page-142"></span><h2 id="section-7-2">7.2 Squirrel<a class="heading-link" href="#section-7-2" aria-label="本节链接">#</a></h2>
+<p>Squirrel是一个类似Lua的编程语言，但使用类似C语言的语法。在起源引擎中，Squirrel是VScript采用的脚本编程语言之一。</p>
+<p>Squirrel是一种高级的命令式面向对象编程语言，旨在成为一款功能强大的脚本工具，满足游戏等应用程序在规模、内存带宽和实时性方面的要求。Squirrel 提供丰富的特性，例如动态类型、委托、高阶函数、生成器、尾递归、异常处理和自动内存管理，同时将编译器和虚拟机集成到约 6000 行 C++ 代码中。</p>
+<p>Squirrel语言的官方文档（英语）：</p>
+<p><a href="http://squirrel-lang.org/doc/squirrel3.html">http://squirrel-lang.org/doc/squirrel3.html</a>（3.0版本文档）</p>
+<p><a href="http://www.squirrel-lang.org/squirreldoc/reference/index.html">http://www.squirrel-lang.org/squirreldoc/reference/index.html</a>（3.2版本的文档）</p>
+<p>3.2版本的文档界面更友好，且两个版本无较大差异，基本通用，故推荐看3.2版本的文档。</p>
+<p>Squirrel语言广泛使用一种名为表（table）的关联数组数据结构。表的键和值几乎可以包含任何类型的变量。脚本执行环境由嵌套表组成，当执行脚本时，其变量和函数会作为表的槽（slots）添加到表中。</p>
+<div class="code-block"><pre><code>printl(&quot;Hello World&quot;); // 语句可以以分号结束……
+printl(&quot;Hello World&quot;)  // ……或者以换行符结束</code></pre></div>
+<p>Squirrel的语法类似于C/C++/Java等语言，但它具有类似Python/Lua等语言的动态特性。语句可以用换行符或分号（;）分隔（在switch/case语句中也可以用关键字case或default分隔），如果语句后面跟着}，这些符号是可以省略的。</p>
+<p>求生之路2使用的Squirrel版本是3.0.4。</p>
+<p>本节只作简单介绍，详细的内容请到Squirrel的官方文档了解。</p>
+<h3 id="section-7-2-1">7.2.1 文件格式<a class="heading-link" href="#section-7-2-1" aria-label="本节链接">#</a></h3>
+<ul class="book-list" role="list"><li><span class="list-label">1.</span><div>变量（variables）</div></li></ul>
+<p>Squirrel 主要有两种类型的变量：表槽（table slots）和局部变量（local variables）。这与类型无关；就像 Python 一样，任何变量可以在任何时候是任何数据类型，无需类型声明。由于执行作用域始终是一个表，任何在函数外部声明的变量都会成为表槽。</p>
+<ul class="book-list" role="list"><li><span class="list-label">（1）</span><div>表槽</div></li></ul>
+<p>表槽需要使用 &lt;- 操作符声明。这些变量用于在函数结束后依然需要保留的值。一旦表槽被创建，就可以使用 = 或 &lt;- 操作符重新赋值。= 操作符在表槽不存在时会抛出异常，因此在需要重新赋值（而非创建新表槽）时应优先使用。</p>
+<ul class="book-list" role="list"><li><span class="list-label">（2）</span><div>局部变量</div></li></ul>
+<p>使用 local 关键字声明，只能在其定义的作用域内（通常是其所在的花括号范围）访问。这类变量用于临时或辅助的用途，后续可以被丢弃。例如一个典型的 for 循环：</p>
+<span class="page-anchor" id="page-143"></span><div class="code-block"><pre><code>for (local i = 0; i &lt; 20; i++) {
+    // 循环逻辑
+}</code></pre></div>
+<ul class="book-list" role="list"><li><span class="list-label">（3）</span><div>全局变量</div></li></ul>
+<p>全局变量实际上是根表［getroottable()］中的表槽。可以使用 :: 作用域操作符声明，也可以通过带或不带 :: 的方式访问。</p>
+<ul class="book-list" role="list"><li><span class="list-label">（4）</span><div>常量</div></li></ul>
+<p>使用 const 关键字声明，用于运行时不会改变的值，例如圆周率 Pi 或表示文件路径的字符串。由于常量是编译期特性，其值在编译期计算，因此只能是整数、浮点数或字符串。试图为常量赋新值会导致编译时错误「can&#x27;t assign expression」。可以想象，Squirrel 在编译时将代码中每个常量标识符的出现替换为当前值，因此无法重新赋值。</p>
+<p>常量可以在代码中多次用不同值声明。在运行时，可以通过 getconsttable() 获取编译期间定义的所有常量表。随着新代码的编译，常量表会更新。值得注意的是，常量表及其值在行为上与普通表槽相同，并没有通常意义上的保护机制。</p>
+<p>注意事项</p>
+<p>local 和 const 变量必须用 = 操作符声明，使用 &lt;- 会导致编译时错误。</p>
+<p>示例代码：</p>
+<div class="code-block"><pre><code>a &lt;- 5               // 在当前表中创建表槽
+b &lt;- &quot;A text string&quot; // 在当前表中创建表槽
+::x &lt;- 10            // 在根表中创建表槽
+local i = 0          // 初始化一个临时变量
+const E = 2.71828    // 创建一个常量
+b = &quot;New string&quot;     // 修改现有表槽
+x = 11               // 修改现有表槽</code></pre></div>
+<p>检测表槽是否存在</p>
+<p>可以使用 in 操作符检查表槽是否存在，也可以通过以下代码实现：</p>
+<div class="code-block"><pre><code>try {a} catch (e) { /*...*/ }</code></pre></div>
+<p>示例代码（假设在与上述代码相同的环境中执行）：</p>
+<div class="code-block"><pre><code>&quot;a&quot; in this  // true
+&quot;x&quot; in this  // false，除非处于根表中
+&quot;i&quot; in this  // false，局部变量不是表槽
+&quot;E&quot; in this  // false，除非处于常量表中
+delete a     // 删除表槽
+&quot;a&quot; in this  // false，表槽不再存在</code></pre></div>
+<h3 id="section-7-2-2">7.2.2 数据类型<a class="heading-link" href="#section-7-2-2" aria-label="本节链接">#</a></h3>
+<p>Squirrel 是一种动态类型语言，任何变量都可以被赋予任何类型的值。</p>
+<p>注意：</p>
+<p>VScript API 函数是与 Source C++ 代码的绑定，因此尽管看似可以将任何类型的值传递给它们，但它们只接受特定类型的值。</p>
+<p>内置函数 typeof 返回输入值的类型，并以小写字符串形式表示，例如 typeof(5) == &quot;integer&quot;。</p>
+<div class="table-scroll" tabindex="0" aria-label="表格，可横向滚动"><table><tbody><tr id="row-18628"><td>类型</td><td>描述</td></tr><tr id="row-18629"><td>Integer</td><td>整数范围为 -2147483648 到 2147483647，即 -231 到 231-1。<br>注意：在 64 位游戏中，如《Team Fortress 2》，整数大小为 64 位，这意味着它们表示的范围为 -9,223,372,036,854,775,808 到 9,223,372,036,854,775,807。</td></tr><tr id="row-18617"><th colspan="2"><span class="page-anchor" id="page-144"></span>续表</th></tr><tr id="row-18618"><th>类型</th><th>描述</th></tr><tr id="row-18528"><td>Float</td><td>范围为-3.4028235e38到3.4028235e38，即 -3.4028235×1038到 3.4028235×1038。<br>在代码中，通过添加小数点，数字变成浮点数。1.0 和 1. 都是合法的，而 .0 或 0f 会导致编译错误。<br>对于正无穷大（+infinity）、负无穷大（-infinity）和 NaN（即Not a Number）没有常量表示，但 1.0/0.0、-1.0/0.0 和 0.0/0.0 会分别计算为这些值。<br>当通过&lt;float&gt;.tostring()或 format(&quot;%f&quot;, &lt;float&gt;) 转换为字符串时，它们分别变为：1.#INF、-1.#INF 和 -1.#IND；inf、-inf 和 nan。</td></tr><tr id="row-18529"><td>String</td><td>不可变字符串，类似于 C 字符串，支持转义序列（如 \t, \a, \b, \n, \r, \v, \f, \\, \&quot;, \&#x27;, \0, \xhhhh）。这些序列在逐字面量字符串中不会起作用。</td></tr><tr id="row-18530"><td>Null</td><td>空值数据类型，只有一个值 null。</td></tr><tr id="row-18531"><td>Bool</td><td>布尔数据类型，可以是 true 或 false。</td></tr><tr id="row-18532"><td>Table</td><td>关联数组。</td></tr><tr id="row-18533"><td>Array</td><td>可变的 C 风格数组。</td></tr><tr id="row-18534"><td>Function</td><td>支持二阶函数，因此可以将函数作为值赋给变量。</td></tr><tr id="row-18535"><td>Class</td><td>面向对象的类，类似于表的实现。</td></tr><tr id="row-18536"><td>Class Instance</td><td>类的实例对象，游戏生成的脚本句柄也被视为实例对象。</td></tr><tr id="row-18537"><td>Generator</td><td>可以挂起并恢复执行的函数。</td></tr><tr id="row-18538"><td>Userdata</td><td>游戏使用的透明数据。</td></tr><tr id="row-18539"><td>Thread</td><td>协程实例，类似于生成器，但具有自己的执行栈。</td></tr><tr id="row-18540"><td>Weak reference</td><td>弱引用，当所指向的对象被销毁时，弱引用会被设置为 null。</td></tr></tbody></table></div>
+<ul class="book-list" role="list"><li><span class="list-label">1.</span><div>布尔值 (Bool)</div></li></ul>
+<p>Squirrel 认为 null、0（整数类型）和 0.0（浮点类型）是 false，任何其他值都被认为是 true。这允许你例如使用 if (var) 来进行变量的 null 检查。</p>
+<aside class='callout'>警告：如果整数或浮点数可能是 0 或 0.0，请不要像这样进行 null 检查。显然，这与内置字符串函数 find(&lt;substring&gt;) 相关，该函数返回找到的子字符串的索引或 null。请改用 if (var == null)。</aside>
+<div class="code-block"><pre><code>if (false) { /* ... */ } // 不执行
+if (null)  { /* ... */ } // 不执行
+if (0)     { /* ... */ } // 不执行
+if (0.0)   { /* ... */ } // 不执行</code></pre></div>
+<ul class="book-list" role="list"><li><span class="list-label">2.</span><div>表 (Tables)</div></li></ul>
+<p>表是关联数组，意味着它们包含一组键值对，称为槽（slots）。可以使用键索引表，返回关联的值。键和值可以是任何数据类型（键不能是 null），包括其他表，这允许创建更复杂的数据结构。</p>
+<p>表通过花括号 {} 来定义。在表定义内部，可以使用 key1 = value1, key2 = value2, ... 模式来定义槽。表定义外部，可以使用 table.key &lt;- value 模式向现有表添加新槽。</p>
+<p>使用 . 运算符索引键仅在键为字符串或数字字面量时有效。数组样式的索引 table[keyVariable] 可以用于索引任何类型的键。</p>
+<aside class='callout'>提示：一些内置的表函数包括 len() 和 clear()。</aside>
+<span class="page-anchor" id="page-145"></span><div class="code-block"><pre><code>// 表定义。键值对之间的逗号是可选的，
+// 如果存在空格。但是，如果下一个键在方括号内，则必须使用逗号。
+myTable &lt;-
+{
+ a = 3               // 键: &quot;a&quot;, 值: 3
+ b = 7,              // 键: &quot;b&quot;, 值: 7
+ [6] = &quot;six&quot;         // 键:  6 , 值: &quot;six&quot;
+ func = function()   // 键: &quot;func&quot;
+ {
+  return a + b
+ }
+ nestedTable =       // 键: &quot;nestedTable&quot;
+ {
+  z = &quot;a string&quot;
+ }
+}
+// 或者：
+myTable &lt;- {}
+myTable[&quot;a&quot;] &lt;- 3     // 字符串键可以这样索引...
+myTable.b    &lt;- 7     // ...有两种方式
+myTable[6]   &lt;- &quot;six&quot; // 数字必须这样索引
+myTable.func &lt;- function() { return a + b }
+myTable.nestedTable &lt;- { z = &quot;a string&quot; }
+// 遍历一个表：
+// &#x27;key&#x27; 和 &#x27;value&#x27; 是任意的
+foreach (key, value in myTable)
+{
+ printl(key + &quot;: &quot; + value)
+}
+// 打印的顺序可能有所不同！
+// a: 3
+// func: (function : 0x00000000005AD280)
+// b: 4
+// 6: six
+// nestedTable: (table : 0x000000000069D130)
+// &#x27;in&#x27; 运算符检查的是键，而不是值：
+printl(&quot;a&quot; in myTable) // 打印 &quot;true&quot;
+printl(3 in myTable)   // 打印 &quot;false&quot;
+printl(myTable.func()) // 打印 10 (a + b)
+// 每个表都有一个内置的长度函数：
+printl(myTable.len())  // 打印 5
+delete myTable.a  // 删除键值对 a=3</code></pre></div>
+<ul class="book-list" role="list"><li><span class="list-label">3.</span><div>数组（Arrays）</div></li></ul>
+<p>数组是按数字索引的对象序列，从0开始。语法上，它们与C语言中的数组类似，但与C语言数组不同，Squirrel中的数组是可变的，可以通过一组内置函数插入和移除值。</p>
+<p>数组使用方括号定义。</p>
+<aside class='callout'>警告：不能使用in运算符来测试某个值是否在数组中，因为在Squirrel中，数组是表格，其中键是索引。in运算符会查找数组的索引，而不是其值。</aside>
+<aside class='callout'>提示：一些内置的数组函数有：len()，clear()，append(&lt;value&gt;)，insert(&lt;index&gt;, &lt;value&gt;)，remove(&lt;index&gt;)，reverse()，sort([func(a,b)])。</aside>
+<p>在Squirrel 3.x中，还有更多可用的函数，包括find(&lt;value&gt;)，map(&lt;func(a)&gt;)，slice(&lt;start&gt;, [end])。</p>
+<span class="page-anchor" id="page-146"></span><div class="code-block"><pre><code>// 数组定义。如果值之间有空格，逗号是可选的。
+myArray &lt;-
+[
+ 7,        // 键：0，值：7
+ &quot;text&quot;,   // 键：1，值：&quot;text&quot;
+ null      // 键：2，值：null
+]
+// 或者：
+myArray = [4, &quot;text&quot;, null]
+// 或者：
+myArray &lt;- []
+myArray.append(7)
+myArray.append(&quot;text&quot;)
+myArray.append(null)
+// 或者：
+myArray &lt;- array(3)
+myArray[0] = 7
+myArray[1] = &quot;text&quot;
+myArray[2] = null
+// 遍历数组：
+// &#x27;i&#x27; 和 &#x27;value&#x27; 是任意的
+foreach (i, value in myArray)
+{
+ printl(i + &quot;: &quot; + value)
+}
+// 或者：
+for (local i = 0; i &lt; myArray.len(); i++)
+{
+ printl(i + &quot;: &quot; + myArray[i])
+}
+// 打印：
+// 0: 7
+// 1: more text
+// 2: null
+// &#x27;in&#x27; 运算符检查的是索引，而不是值：
+printl(   2   in myArray) // 打印 &quot;true&quot;
+printl(&quot;text&quot; in myArray) // 打印 &quot;false&quot;
+printl(myArray.len())     // 打印 3
+myArray.remove(0)   // 移除索引0的元素
+   // 并重新排列所有其他索引</code></pre></div>
+<ul class="book-list" role="list"><li><span class="list-label">4.</span><div>函数（Functions）</div></li></ul>
+<p>Squirrel 中的函数与 C 语言中的函数类似。它支持二阶函数，因此可以像其他值一样直接操作函数，包括将其存储在变量和表槽中。此外，还支持默认参数值和可变数量的参数。</p>
+<p>有关详细信息，请参阅Squirrel API文档上有关函数的介绍<sup><a href="#note-152-1">a</a></sup>。</p>
+<p>命名函数时通常以大写字母开头。</p>
+<span class="page-anchor" id="page-147"></span><div class="code-block"><pre><code>// 定义函数。
+// 注意：函数就像变量一样，由名称和值组成，其中值包含关键字「function」。
+Greet &lt;- function()
+{
+ printl(&quot;Hello!&quot;)
+}
+someTable &lt;-
+{
+ Greet = function()
+ {
+  printl(&quot;Hello!&quot;)
+ }
+}
+// 函数也可在局部定义：
+local GreetLocal = function()
+{
+ printl(&quot;Hello!&quot;)
+}
+// 使用「()」（括号）调用这些函数。
+// 这些函数都会打印「hello」：
+Greet()
+someTable.Greet()
+GreetLocal()
+// 出于便利，存在另一种语法来定义函数。
+// 所有这些和上面的代码的效果都是一样的。
+// 另外，如果只有一个语句，则括号「{」和「}」是可选的。
+function Greet()
+{
+ printl(&quot;Hello!&quot;)
+}
+someTable &lt;-
+{
+ function Greet()
+ {
+  printl(&quot;Hello!&quot;)
+ }
+}
+local function GreetLocal()
+{
+ printl(&quot;Hello!&quot;)
+}
+// 更简短的版本：local function GreetLocal() printl(&quot;Hello!&quot;)
+// 这些函数都会打印「hello」：
+Greet()
+someTable.Greet()
+GreetLocal()</code></pre></div>
+<p>调用函数时，可以使其能够或必须接收输入值，这些输入值决定了函数的副作用和/或返回值。</p>
+<aside class='callout'>注意：函数定义中，多个参数必须用逗号分隔：function Test(a, b, c, d = 4, e = 5) {...}。对于函数调用，空格即可代替逗号：Test(6,7,8) == Test(6 7 8)。</aside>
+<aside class='callout'>注意：所有没有默认值的参数必须先排序。</aside>
+<aside class='callout'>提示：1.为了避免异常，检查参数是否为null通常是一个好主意。 2.由于参数不受类型限制，因此可以使用 typeof 函数以不同的方式处理不同的类型。</aside>
+<aside class='callout'>提示：通过在最后一个参数中指定「...」，函数可以拥有可变数量的参数。在函数体中，变量 vargv 可用，其行为类似于普通数组。</aside>
+<aside class='callout'>注意：在 Squirrel 2.x 中，vargv 是一个伪数组，其行为与普通数组不同。每次出现它时，都必须用一个数字作为索引，例如 vargv[0]。它的长度存储在另一个名为 vargc 的变量中，然而该变量在 Squirrel 3.x 中不存在，因此代码不兼容。</aside>
+<span class="page-anchor" id="page-148"></span><div class="code-block"><pre><code>// Squirrel 3.x
+varArgFunction &lt;- function(delimiter, ...)
+{
+ foreach (i, arg in vargv)
+  print(i + delimiter + arg + &quot;\n&quot;)
+}
+varArgFunction(&quot; : &quot;, 4, null, &quot;string&quot;)
+// prints:
+// 0 : 4
+// 1 : null
+// 2 : string
+// Squirrel 2.x
+varArgFunction &lt;- function(delimiter, ...)
+{
+ for (local i = 0, i &lt; vargc; i++)
+  print(i + delimiter + vargv[i] + &quot;\n&quot;)
+}
+varArgFunction(&quot; : &quot;, 4, null, &quot;string&quot;)
+// prints:
+// 0 : 4
+// 1 : null
+// 2 : string</code></pre></div>
+<p>函数以可选的 return 语句结尾，该语句也可以返回一个值。你可以将返回值想象成「插入」到函数调用的位置。如果函数中未指定返回值，则返回值为 null：</p>
+<div class="code-block"><pre><code>function IsEven(n)
+{
+ if (n % 2 == 0)
+  return true
+ else
+  return false
+}
+// alternatively:
+IsEven &lt;- function(n) return n % 2 == 0
+if (IsEven(42)) // (42 % 2 == 0) == true
+{
+ printl(&quot;42 is even!&quot;)
+}</code></pre></div>
+<p>从 Squirrel 3.x 开始，lambda 表达式（lambda expression）被引入，它是一种更方便的方式来定义一个只返回单个表达式的函数。当需要将一个函数作为其他函数（例如 array.sort 或 array.map）的参数时，lambda 表达式尤其有用：</p>
+<div class="code-block"><pre><code>local func = @(a,b) a - b // == function(a,b) { return a - b }
+printl( func(17,9) ) // prints 8
+local arr = [1,5,4,6,2,3]
+arr.sort(func)
+// arr == [1,2,3,4,5,6]
+arr = arr.map( @(x) x * x ) // == function(x) { return x * x }
+// arr == [1,4,9,16,25,36]</code></pre></div>
+<ul class="book-list" role="list"><li><span class="list-label">5.</span><div>生成器（Generators）</div></li></ul>
+<p>生成器<sup><a href="#note-154-1">a</a></sup>是一类特殊函数，其代码中包含关键字yield。该关键字会暂停生成器函数的执行，并能向恢复其执行的函数返回某个表达式的值。</p>
+<p>对于某个生成器g，可通过表达式resume g恢复其执行；该resume表达式的返回值，即为生成器函数上次暂停时通过yield产出的值。而生成器本身的返回值则无关紧要。</p>
+<p>生成器可用于foreach语句中，在此场景下无需手动编写resume语句。这种用法下，生成器具备显著优势：它能「即时」（just in time）计算出下一个要产出的值。与之相比，若遍历预先计算好的数组（array）或表（table），且因某些原因在遍历完所有元素前就提前结束（例如循环提前中断），那么之前为数组 / 表中未遍历元素所做的计算就会变成「无用功」，这种遍历方式的劣势便会凸显。</p>
+<p>此外，生成器理论上可产出无限多个值，而数组和表能存储的值的数量则是有限的。</p>
+<div class="code-block"><pre><code>function PowersOfTwo()
+{
+ for (local n = 1; true; n *= 2)
+  yield n
+}
+local x = 100
+// 将 x 设置为大于或等于 x 的最小 2 的幂：
+foreach (i,pow in PowersOfTwo())
+{
+ if (pow &gt;= x)
+ {
+  x = pow
+  break
+ }
+}</code></pre></div>
+<p>代码1</p>
+<span class="page-anchor" id="page-149"></span><div class="code-block"><pre><code>function geny(n)
+{
+    for(local i=1;i&lt;=n;i+=1)
+        yield i;
+    return null;
+}
+local gtor=geny(10);
+local x;
+while(x=resume gtor) print(x+&quot;\n&quot;);</code></pre></div>
+<p>代码2</p>
+<p>代码2的输出如下：</p>
+<div class="code-block"><pre><code>1
+2
+3
+4
+5
+6
+7
+8
+9
+10</code></pre></div>
+<p>包含yield语句的函数被称为「生成器函数」（generator function）。调用生成器函数时，它并不会执行函数体，而是返回一个新的、处于暂停状态（suspended）的生成器（generator）。在返回的生成器「存活」（alive）期间，可以通过resume语句恢复其执行。</p>
+<p>yield关键字的作用是暂停生成器的执行，并且可以选择将某个表达式的结果返回给恢复该生成器执行的函数。当生成器返回时，它会进入「终止状态」（die）；生成器返回的情况有两种：一是执行显式的return语句，二是退出函数体。此外，若生成器在运行过程中发生未处理的异常（或运行时错误，runtime error），也会自动终止。处于终止状态的生成器无法再通过resume恢复执行（如代码2所示）</p>
+<p>生成器也可通过foreach语句进行迭代。当foreach对生成器进行求值时，会在每次迭代中恢复生成器的执行，直到生成器返回为止。需要注意的是，生成器通过return语句返回的值会被忽略。</p>
+<aside class='callout'>注意：处于暂停状态的生成器，会对其局部变量中存储的所有值持有「强引用」（strong reference），但对this对象仅持有「弱引用」（weak reference）。而处于运行状态的生成器，对this对象同样持有强引用。</aside>
+<ul class="book-list" role="list"><li><span class="list-label">6.</span><div>类（Class）</div></li></ul>
+<p>Squirrel 实现了一种类似于 Java/C++ 等语言的类机制，但由于其动态特性，它在几个方面有所不同。类是像整数或字符串一样的一等对象，可以存储在表槽、局部变量、数组中，并作为函数参数传递。</p>
+<p>以下是一个简单的例子：</p>
+<span class="page-anchor" id="page-150"></span><div class="code-block"><pre><code>class Weapon
+{
+ static prefix = &quot;weapon_&quot; // 静态对象是只读的！
+
+ // 例如，对于单个变量，最好使用 `anything` 声明它们，并在构造函数时覆盖它们。
+ name    = null
+ primMax = null
+ secMax  = null
+
+ // 容器和实例本身不会逐个复制，只会复制引用。count[0] 对于所有实例都是相同的。
+ count = [0]
+
+ constructor(name, prim, sec)
+ {
+  this.name    = prefix + name
+  this.primMax = prim
+  this.secMax  = sec
+  count[0]++
+ }
+
+ function GetEntities()
+ {
+  local list = []
+  local wep = null
+  while ( wep = Entities.FindByClassname(wep, name) )
+  {
+   list.append(wep)
+  }
+  return list
+ }
+
+ function _tostring() return this.name
+
+ // ... 更多有用的函数 ...
+}
+awp  &lt;- Weapon(&quot;awp&quot;, 10, 30)
+ak47 &lt;- Weapon(&quot;ak47&quot;, 30, 90)
+// 可以通过awp.primMax、awp.GetEntities()，等等来访问类和函数。</code></pre></div>
+<aside class='callout'>提示：您可能需要重写的元方法包括 _tostring()、_typeof()、_cmp(other)、_add(other)、_sub(other)、_mul(other)、_div(other)、_modulo(other)、_nexti(previdx)。</aside>
+<span class="page-anchor" id="page-151"></span><h2 id="section-7-3">7.3 求生之路2脚本<a class="heading-link" href="#section-7-3" aria-label="本节链接">#</a></h2>
+<p>《求生之路2》的VScript是运行在游戏内虚拟机中的服务器端脚本。它们使用Squirrel编写，Squirrel是一种类似于Lua的编译型脚本语言。该虚拟机目前运行的是Squirrel 3.0.4版本。</p>
+<h3 id="section-7-3-1">7.3.1 主要用途<a class="heading-link" href="#section-7-3-1" aria-label="本节链接">#</a></h3>
+<ul class="book-list" role="list"><li><span class="list-label">1.</span><div>导演脚本（Director Script）</div></li></ul>
+<p>在《求生之路2》中，VScript 最常见的用途是临时影响 AI 导演的行为。这些脚本的功能多种多样，从简单的调整感染者生成和禁止 Boss 感染者出现，到自定义事件（例如突袭和挑战），甚至是复杂的场景化恐慌事件和完全自定义的结局。官方战役中的大多数事件主要都是通过这种方式实现的。</p>
+<p>导演脚本的工作原理主要是将导演使用的各种变量的值写入 DirectorOptions 表。</p>
+<p>一次只能运行一个导演脚本。执行一个新的脚本会终止任何先前正在运行的脚本，并删除它在 DirectorOptions 表中设置的所有值。</p>
+<ul class="book-list" role="list"><li><span class="list-label">2.</span><div>实体脚本（Entity Script）</div></li></ul><section class="chapter-notes" aria-label="原书脚注"><h2>原书脚注</h2><ol><li id="note-152-1"><a href="#page-146">原书第 146 页</a> a <a href="http://www.squirrel-lang.org/squirreldoc/reference/language/functions.html">http://www.squirrel-lang.org/squirreldoc/reference/language/functions.html</a></li><li id="note-154-1"><a href="#page-148">原书第 148 页</a> a <a href="http://www.squirrel-lang.org/squirreldoc/reference/language/generators.html#generators">http://www.squirrel-lang.org/squirreldoc/reference/language/generators.html#generators</a></li></ol></section></article>
+    <nav class="chapter-pager" aria-label="相邻篇章"><a href="./chapter-06.html"><small>← 上一篇</small>关卡设计与优化</a><a href="./chapter-08.html"><small>下一篇 →</small>求生之路2地图制作实例</a></nav>
+  </main>
+  <aside class="section-sidebar"><nav aria-label="本篇目录"><h2>本篇目录</h2><ul><li class="toc-level-2"><a href="#section-7-1">7.1 VScript</a></li><li class="toc-level-3"><a href="#section-7-1-1">7.1.1 使用VScript的游戏/软件</a></li><li class="toc-level-3"><a href="#section-7-1-2">7.1.2 VScript到底意味着什么？</a></li><li class="toc-level-2"><a href="#section-7-2">7.2 Squirrel</a></li><li class="toc-level-3"><a href="#section-7-2-1">7.2.1 文件格式</a></li><li class="toc-level-3"><a href="#section-7-2-2">7.2.2 数据类型</a></li><li class="toc-level-2"><a href="#section-7-3">7.3 求生之路2脚本</a></li><li class="toc-level-3"><a href="#section-7-3-1">7.3.1 主要用途</a></li></ul></nav></aside>
+</div>
+<footer class="site-footer"><div><span>大康233 · 精通求生之路地图制作</span><span>网页读本 · v0.8.1</span></div></footer>
+<dialog id="search" aria-labelledby="search-title">
+  <div class="dialog-head"><h2 id="search-title">搜索全书</h2><form method="dialog"><button type="submit" aria-label="关闭搜索">×</button></form></div>
+  <label for="search-input" class="sr-only">搜索词</label><input id="search-input" type="search" placeholder="章节、命令、实体名…" autocomplete="off">
+  <p id="search-status" role="status"></p><ol id="search-results"></ol>
+</dialog>
+</body>
+</html>
