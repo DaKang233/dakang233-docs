@@ -33,6 +33,9 @@ class Extraction:
     def __init__(self, source, asset_dir):
         self.doc = fitz.open(source)
         self.source = source
+        self.toc = self.doc.get_toc()
+        self.cover_pages = [page for level, title, page in self.toc
+                            if level == 1 and re.match(r"^第\s*\d+\s*章", title)]
         self.asset_dir = asset_dir
         self.page_numbers = {p.xref: p.number + 1 for p in self.doc}
         self.marked = {}
@@ -134,7 +137,7 @@ class Extraction:
             if child is not None:
                 children.append(child)
         node = {"role": role, "children": children, "xref": xref}
-        if role == "Figure" and page:
+        if role == "Figure" and page and page not in self.cover_pages:
             box_type, raw_box = doc.xref_get_key(xref, "A/BBox")
             box = [float(v) for v in raw_box.strip("[]").split()] if box_type == "array" else None
             if box:
@@ -181,8 +184,9 @@ class Extraction:
         print(f"{len(self.doc)} pages, {len(self.marked)} marked items, {len(unused)} unused text marks outside TOC")
         if unused:
             print(unused[:25])
-        return {"source": self.source.name, "sha256": hashlib.sha256(self.source.read_bytes()).hexdigest(),
-                "pages": len(self.doc), "toc": self.doc.get_toc(), "root": root,
+        covers = {page: self.image(page, self.doc[page - 1].rect) for page in self.cover_pages}
+        return {"chapter_covers": covers, "source": self.source.name, "sha256": hashlib.sha256(self.source.read_bytes()).hexdigest(),
+                "pages": len(self.doc), "toc": self.toc, "root": root,
                 "unused": unused}
 
 

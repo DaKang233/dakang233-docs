@@ -82,6 +82,7 @@ class Renderer:
     def __init__(self, data):
         self.data = data
         self.toc = data["toc"]
+        self.chapter_covers = {int(page): image for page, image in data["chapter_covers"].items()}
         self.bookmarks = {(page, keys(title)): (level, clean_title(title)) for level, title, page in self.toc}
         self.parts = [
             {"id": "front", "label": "卷首", "title": "前言与出版信息", "page": 1, "nodes": []}
@@ -491,6 +492,8 @@ class Renderer:
             tag, css = "aside", "callout"
         elif role.startswith("章节描述"):
             tag, css = "p", "chapter-intro"
+            if page_of(node) in self.chapter_covers:
+                css += " sr-only"
         elif role == "五号引文":
             tag, css = "blockquote", ""
         elif self.caption(node):
@@ -532,6 +535,11 @@ class Renderer:
         self.part = part
         self.seen_pages = set()
         body = []
+        page = part["page"]
+        if cover := self.chapter_covers.get(page):
+            alt = f'{part["label"]} {part["title"]}，原书章节封面'
+            image = self.figure({"figure": cover}, alt=alt)
+            body.append(self.page_mark(page) + f'<figure class="chapter-cover">{image}</figure>')
         nodes = part["nodes"]
         i = 0
         while i < len(nodes):

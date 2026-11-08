@@ -114,6 +114,9 @@ kbd { border: 1px solid var(--line); border-radius: .2rem; padding: .05rem .22re
 .chapter-notes li { margin-block: .4rem; }
 sup { line-height: 0; }
 figure { margin: 1rem 0 1.3rem; text-align: center; }
+.chapter-cover { max-width: 37rem; margin-inline: auto; }
+.chapter-cover .figure-link { margin: 0; }
+.chapter-cover .book-image { width: 100%; border-radius: 0; }
 .figure-link { display: inline-block; max-width: 100%; margin: .2rem; }
 .book-image { display: block; width: var(--figure-width); max-width: 100%; height: auto; border-radius: .15rem; }
 .inline-image { width: min(var(--figure-width), 6rem); max-width: 100%; height: auto; vertical-align: middle; margin-inline: .15rem; }

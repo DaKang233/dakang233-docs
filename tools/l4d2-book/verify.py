@@ -23,6 +23,12 @@ def verify(root):
         anchors[file] = set(ids)
         if file != "index.html":
             assert len(document.xpath("//article")) == 1, f"Missing text article in {file}"
+        covers = document.xpath("//article/figure[@class='chapter-cover']/a/img")
+        assert len(covers) == int(file.startswith("chapter-")), f"Unexpected number of covers in {file}"
+        for cover in covers:
+            width, height = int(cover.get("width")), int(cover.get("height"))
+            assert 1.40 < height / width < 1.43, f"Cover does not match the source page ratio in {file}"
+            assert cover.get("src") == cover.getparent().get("href"), f"Invalid cover image link in {file}"
         assert not document.xpath("//iframe|//object|//embed|//canvas"), f"Unexpected embedded viewer in {file}"
         images.update(document.xpath("//article//img/@src"))
         tables += len(document.xpath("//article//table"))

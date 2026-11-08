@@ -23,8 +23,9 @@
   <main id="main">
     <div class="chapter-header" id="chapter-05"><div class="breadcrumb"><a href="./index.html#contents">全书目录</a><span aria-hidden="true">/</span>第 5 章</div><h1>求生之路2地图制作基础教程</h1></div>
     <details class="mobile-sections"><summary>本篇目录</summary><ul><li class="toc-level-2"><a href="#section-5-1">5.1 检查点（安全室）</a></li><li class="toc-level-3"><a href="#section-5-1-1">5.1.1 要求</a></li><li class="toc-level-3"><a href="#section-5-1-2">5.1.2 创建安全门</a></li><li class="toc-level-2"><a href="#section-5-2">5.2 输入与输出</a></li><li class="toc-level-3"><a href="#section-5-2-1">5.2.1 输入</a></li><li class="toc-level-3"><a href="#section-5-2-2">5.2.2 输出</a></li><li class="toc-level-3"><a href="#section-5-2-3">5.2.3 实例</a></li><li class="toc-level-2"><a href="#section-5-3">5.3 恐慌事件</a></li><li class="toc-level-3"><a href="#section-5-3-1">5.3.1 组成内容</a></li></ul></details>
-    <article class="book-content" aria-label="求生之路2地图制作基础教程"><span class="page-anchor" id="page-103"></span><p class='chapter-intro'>本章将讲述一个求生之路2战役地图中的其他组成部分，包括安全室和救援关。我们还会学习一些基本实体逻辑，比如输出输入系统，一些逻辑实体等，了解如何在地图中实现一些简单的机关。</p>
-<p class='chapter-intro'>想要了解更多内容就请开始本章的学习吧！</p>
+    <article class="book-content" aria-label="求生之路2地图制作基础教程"><span class="page-anchor" id="page-103"></span><figure class="chapter-cover"><a href="./figures/65143bb826454fae94d7.webp" class="figure-link" aria-label="查看原图：第 5 章 求生之路2地图制作基础教程，原书章节封面"><img src="./figures/65143bb826454fae94d7.webp" width="1019" height="1440" alt="第 5 章 求生之路2地图制作基础教程，原书章节封面" loading="lazy" decoding="async" class="book-image" style="--figure-width:982px"></a></figure>
+<p class='chapter-intro sr-only'>本章将讲述一个求生之路2战役地图中的其他组成部分，包括安全室和救援关。我们还会学习一些基本实体逻辑，比如输出输入系统，一些逻辑实体等，了解如何在地图中实现一些简单的机关。</p>
+<p class='chapter-intro sr-only'>想要了解更多内容就请开始本章的学习吧！</p>
 <span class="page-anchor" id="page-104"></span><h2 id="section-5-1">5.1 检查点（安全室）<a class="heading-link" href="#section-5-1" aria-label="本节链接">#</a></h2>
 <p>检查点（Checkpoint）是介于两个关卡之间的过渡区域，它根据需要加载对应的关卡。在游戏中称安全室（safe room）。玩家可以在这里得到修整，并做好下一关的准备。通过安全室，我们可以将整个战役拆分成多个地图，而不必把全部内容都做在一张地图内，同时地图也能做得更大，内容更丰富。玩家进入安全室后会卸载当前关卡并加载下一关卡。</p>
 <p>下面我们来看看怎么做一个安全室。</p>
