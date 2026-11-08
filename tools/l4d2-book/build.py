@@ -15,6 +15,7 @@ SUBTITLE = "从入门到发布"
 FULL = f"{TITLE}：{SUBTITLE}"
 VERSION = "v0.8.1"
 CANONICAL = "https://docs.dakang233.com/l4d2-book/"
+ONLINE_READER = "https://docs.dakang233.com/reader/?book=l4d2"
 HAMMER_FIGURE_LABEL = "图1-4-1"
 HAMMER_FIGURE_ID = "figure-1-4-1"
 EXTERNAL_URL = re.compile(r"https?://[^\s<>\u3000-\u9fff（）。，；「」『』]+")
@@ -647,7 +648,7 @@ def shell(title, page, body, css=""):
 <a class="skip-link" href="#main">跳到正文</a>
 <header class="topbar">
   <div class="topbar-inner"><a class="wordmark" href="./index.html"><span aria-hidden="true" class="brand-icon">▦</span><span>大康233<span class="brand-sep"> / </span><span class="brand-book">地图制作手册</span></span></a>
-    <nav aria-label="站点导航"><a href="./index.html#contents">全书目录</a><button type="button" id="open-search" aria-haspopup="dialog" hidden><span aria-hidden="true">⌕</span> <span>搜全书</span> <kbd>Ctrl K</kbd></button></nav>
+    <nav aria-label="站点导航"><a href="./index.html#contents">全书目录</a><button type="button" id="open-search" aria-haspopup="dialog" hidden><span aria-hidden="true">⌕</span> <span>搜全书</span> <kbd>Ctrl K</kbd></button><a href="{ONLINE_READER}" target="_blank" rel="noopener" aria-label="在线阅读器（在新标签页打开）">在线阅读器</a></nav>
   </div>
 </header>
 {body}

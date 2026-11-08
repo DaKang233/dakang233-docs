@@ -179,6 +179,13 @@ mark { color: inherit; background: #ffd7a0; padding: 0 .05em; }
   .front-link, .contents-row summary { grid-template-columns: 3.7rem 1fr .8rem; }
   .contents-detail { padding-left: 4.55rem; }
 }
+@media (max-width: 24rem) {
+  .topbar-inner { gap: .45rem; padding-inline: .6rem; }
+  .wordmark { gap: .35rem; font-size: .9rem; }
+  .brand-icon { width: 1.55rem; height: 1.55rem; }
+  .topbar nav { gap: .4rem .48rem; font-size: .82rem; flex-wrap: wrap; justify-content: flex-end; }
+  #open-search { padding-inline: .35rem; }
+}
 @media print {
   .topbar, .book-sidebar, .section-sidebar, .mobile-sections, .chapter-pager, .heading-link, .copy-code, .site-footer { display: none; }
   .reader-layout { display: block; padding: 0; }

@@ -157,7 +157,17 @@ class Extraction:
                            max(b[2] for b in boxes), max(b[3] for b in boxes)]
             if box:
                 tagged_bounds = tuple(round(coord) for coord in box)
-                box = FIGURE_CROPS.get((page, tagged_bounds), box)
+                crop = FIGURE_CROPS.get((page, tagged_bounds))
+                if crop:
+                    # InDesign also exports the callout text boxes into the body story.
+                    # Keep the labels in the rendered figure and omit the duplicate text.
+                    label_area = fitz.Rect(box[2], crop[1], crop[2], crop[3])
+                    for (source_page, _), mark in self.marked.items():
+                        if (source_page == page and mark["box"]
+                                and label_area.contains(fitz.Rect(mark["box"]))
+                                and re.fullmatch(r"[①-⑨]+", mark["text"].strip())):
+                            mark["text"] = ""
+                    box = crop
                 node["figure"] = self.image(page, box)
                 node["page"] = page
                 node["box"] = box

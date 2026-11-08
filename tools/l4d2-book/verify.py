@@ -21,6 +21,9 @@ def verify(root):
         ids = document.xpath("//*[@id]/@id")
         assert len(ids) == len(set(ids)), f"Duplicate anchors in {file}: {Counter(ids)}"
         anchors[file] = set(ids)
+        shortcut = document.xpath("//header[@class='topbar']//nav/a[normalize-space()='在线阅读器']")
+        assert len(shortcut) == 1, f"Missing reader shortcut in {file}"
+        assert shortcut[0].get("href") == "https://docs.dakang233.com/reader/?book=l4d2"
         if file != "index.html":
             assert len(document.xpath("//article")) == 1, f"Missing text article in {file}"
         covers = document.xpath("//article/figure[@class='chapter-cover']/a/img")
@@ -41,6 +44,8 @@ def verify(root):
         "Hammer figure crop must include the right-side callouts"
     )
     assert hammer_chapter.xpath("//p/a[@href='./chapter-01.html#figure-1-4-1']"), "Broken Hammer figure cross-reference"
+    assert not hammer_chapter.xpath("//p[normalize-space()='①②③⑤④⑥⑦⑧⑨']"), "Duplicate figure callout labels"
+    assert hammer_chapter.xpath("//article//li[contains(., '标题栏①')]"), "Missing title bar callout reference"
     search_file = (root / "search-data.js").read_text(encoding="utf-8").strip()
     records = json.loads(search_file.removeprefix("window.BOOK_SEARCH = ").removesuffix(";"))
     links.extend(("index.html", row[0]) for row in records)
