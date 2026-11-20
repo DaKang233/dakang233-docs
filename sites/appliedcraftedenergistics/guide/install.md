@@ -8,7 +8,7 @@
 | NeoForge | 21.1.251 或更高（21.1.x） |
 | Applied Energistics 2 | 19.2.x |
 | Create | 6.0.10.x |
-| Create: Crafted Beginning | 0.1.x |
+| Create: Crafted Beginning | 0.1.x（0.1.1 已验证；0.1.2 源码改过气体网络调度，公开 API 未变，发布后需回归） |
 | Applied Crafted Energistics | 0.1.x |
 
 以上版本范围也写进了模组的 `neoforge.mods.toml`，版本不符时加载器会直接提示。

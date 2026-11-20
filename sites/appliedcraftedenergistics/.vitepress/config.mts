@@ -23,6 +23,7 @@ export default defineConfig({
         { text: '配置文件', link: '/guide/config' },
         { text: '常见问题', link: '/guide/faq' },
         { text: '许可与声明', link: '/guide/license' },
+        { text: '开发者：管网交互', link: '/guide/developer-interop' },
       ] },
     ],
     sidebar: [
@@ -42,6 +43,7 @@ export default defineConfig({
         { text: '配置文件', link: '/guide/config' },
         { text: '常见问题与已知限制', link: '/guide/faq' },
         { text: '许可与第三方声明', link: '/guide/license' },
+        { text: '开发者：管网交互', link: '/guide/developer-interop' },
       ] },
     ],
     socialLinks: [{ icon: 'github', link: 'https://github.com/DaKang233/AppliedCraftedEnergistics' }],

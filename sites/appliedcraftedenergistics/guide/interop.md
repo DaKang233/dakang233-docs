@@ -29,3 +29,7 @@
 
 本模组只依赖 AE2 的公开 API（`appeng.api.*`）与 CCB 的公开 API（`net.ty.createcraftedbeginning.api.*`），
 不向它们注入任何 mixin。已与 Applied Pneumatics 1.0.9 + PneumaticCraft 8.2.24 在同一整合包中启动验证。
+
+::: tip 想看代码级细节
+四个接触点的实现、CCB 端点契约与 0.1.2 兼容性分析见 [开发者：与 CCB 气体管网的交互](/guide/developer-interop)。
+:::
