@@ -20,7 +20,7 @@
    - `appliedenergistics2-19.2.x.jar`
    - `create-1.21.1-6.0.10.x.jar`
    - `createcraftedbeginning-0.1.x.jar`
-   - `appliedcraftedenergistics-1.21.1-neoforge-0.2.0.jar`
+   - `appliedcraftedenergistics-1.21.1-neoforge-0.2.1.jar`
 3. 启动游戏。
 
 > 本模组是纯附属，不需要新建世界、不需要额外资源包，也没有客户端 / 服务端分离的额外要求；
@@ -29,9 +29,9 @@
 ## 版本与下载
 
 - 发布页：[GitHub Releases](https://github.com/DaKang233/AppliedCraftedEnergistics/releases)
-- 当前版本 `0.2.0` 的文件校验：
-  - 大小 213,915 字节
-  - SHA-256 `A24AC6BC13A4D47E5EB782CA9F5E72642A172EC9998199FF0BDA93F92676B4DB`
+- 当前版本 `0.2.1` 的文件校验：
+  - 大小 219,140 字节
+  - SHA-256 `E78FD395A8A9C4D6DDFBEEDDE9E098E2864CA965E12A9866FDE426829CF86994`
 
 ## 从 0.1.x 升级到 0.2.0
 
