@@ -37,7 +37,7 @@ maxAmount(GU) = 体积(L) × maxPressure(Pa) / 100,000
 | 密封储罐 `airtighttank` | 80 kL / 方块 | HARD 24 atm | **1,920,000 GU** |
 | 同上按安全线 | 80 kL | SAFE 16 atm | 1,280,000 GU |
 | 气罐（物品） | 2 kL | 10 atm | 20,000 GU |
-| ME 气体接口缓冲罐 | 8,000 L | 24 atm | 192,000 GU |
+| ME 气体接口槽位 | 目标数量 / 目标压力 | 24 atm（额定），20 atm 泄压 | 每槽目标数量上限 64,000 GU |
 | 气体 P2P 隧道面 | 4,000 L | 16 atm | 64,000 GU |
 
 ## 传输的规则

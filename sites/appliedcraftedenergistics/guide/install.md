@@ -9,7 +9,7 @@
 | Applied Energistics 2 | 19.2.x |
 | Create | 6.0.10.x |
 | Create: Crafted Beginning | 0.1.x（0.1.1 已验证；0.1.2 源码改过气体网络调度，公开 API 未变，发布后需回归） |
-| Applied Crafted Energistics | 0.1.x |
+| Applied Crafted Energistics | 0.2.x |
 
 以上版本范围也写进了模组的 `neoforge.mods.toml`，版本不符时加载器会直接提示。
 
@@ -20,7 +20,7 @@
    - `appliedenergistics2-19.2.x.jar`
    - `create-1.21.1-6.0.10.x.jar`
    - `createcraftedbeginning-0.1.x.jar`
-   - `appliedcraftedenergistics-1.21.1-neoforge-0.1.1.jar`
+   - `appliedcraftedenergistics-1.21.1-neoforge-0.2.0.jar`
 3. 启动游戏。
 
 > 本模组是纯附属，不需要新建世界、不需要额外资源包，也没有客户端 / 服务端分离的额外要求；
@@ -29,9 +29,15 @@
 ## 版本与下载
 
 - 发布页：[GitHub Releases](https://github.com/DaKang233/AppliedCraftedEnergistics/releases)
-- 当前版本 `0.1.1` 的文件校验：
-  - 大小 200,868 字节
-  - SHA-256 `3AB56065547E77A5D739D3229EBED77981EA931D64897AC294D7CE868DAD43EA`
+- 当前版本 `0.2.0` 的文件校验：
+  - 大小 213,915 字节
+  - SHA-256 `A24AC6BC13A4D47E5EB782CA9F5E72642A172EC9998199FF0BDA93F92676B4DB`
+
+## 从 0.1.x 升级到 0.2.0
+
+- 旧接口 8 kL 缓冲罐中的气体会自动转入新接口的第一个空槽；
+- 旧的单设备模式与供给压力设置不再使用，改为逐槽设置；
+- 原版 `ae2:interface` 不再提供气体缓存能力。
 
 ## 升级注意
 

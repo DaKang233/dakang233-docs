@@ -23,7 +23,7 @@ features:
   - title: 气体存储元件
     details: 1k / 4k / 16k / 64k / 256k 五档 ME 气体元件，1 AE byte 存储 1,000 GU。
   - title: ME 气体接口
-    details: 网络背后是一只真实的 CCB 缓冲罐，支持导入 / 导出 / 双向 / 关闭与可调供给压力。
+    details: 与原版 ME 接口相同的九组配置/缓存槽，逐槽目标数量与目标压力、逐槽模式与安全阀泄压。
   - title: 气体 P2P 隧道
     details: 像普通 P2P 一样把气体送到网络的另一头，每个面都是一只真实的小压力容器。
   - title: 原生设备互通

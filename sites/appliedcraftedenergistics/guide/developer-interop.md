@@ -1,3 +1,9 @@
+::: warning 0.2.0 文档说明
+0.2.0 已**移除**给原版 `ae2:interface` 添加气体缓存的 `AeInterfaceGasCompat`：
+现在只有 ACE 的 ME 气体接口暴露 CCB 气体能力（`GasInterfaceStorageView`，9 个逐槽
+`GasPressureCompartment`，体积 = 目标数量 / 目标压力）。下文中关于 `ae2:interface` 兼容的
+小节保留作历史记录；其余端点契约、CCB 求解器要求与 0.1.2 兼容性分析仍然有效。
+:::
 # 开发者：与 CCB 气体管网的交互
 
 本页写给想看代码的人：**本模组不实现自己的气体网络，而是"扮演一个符合 CCB 契约的真实容器"**，
