@@ -33,8 +33,8 @@ MEGA Cells 是可选的配方前置：不安装时基础 1k–256k 元件和其�
 
 - 发布页：[GitHub Releases](https://github.com/DaKang233/AppliedCraftedEnergistics/releases)
 - 当前版本 `0.2.2` 的文件校验：
-  - 大小 289,403 字节
-  - SHA-256 `4622636BEA20B1272EF385670A11C1133314C0A77E9C8CB8F3323C94262AB2B0`
+  - 大小 289,395 字节
+  - SHA-256 `A05632AFBFF2BBB578F52629ACC29864F0D5F5996A514A0CEC9127E1A92B4044`
 
 ## 从 0.1.x 升级到 0.2.x
 
