@@ -21,15 +21,14 @@ hero:
 
 features:
   - title: 气体存储元件
-    details: 1k / 4k / 16k / 64k / 256k 五档 ME 气体元件，1 AE byte 存储 1,000 GU。
+    details: 1k–256k 与 1M–256M 共十档 ME 气体元件，1 AE byte 存储 1,000 GU；高容量档使用 MEGA Cells 配方。
   - title: ME 气体接口
-    details: 与原版 ME 接口相同的九组配置/缓存槽，逐槽目标数量与目标压力、逐槽模式与安全阀泄压。
+    details: 九组配置/缓存槽，逐槽目标数量、目标压力与传输模式，安全卡经 CCB 真实泄压。
   - title: 气体 P2P 隧道
     details: 像普通 P2P 一样把气体送到网络的另一头，每个面都是一只真实的小压力容器。
   - title: 原生设备互通
-    details: AE2 的输入 / 输出 / 存储总线、ME 接口与样板供应器都能直接处理气体。
-  - title: 元件升级卡
-    details: AE2 原生反相 / 均分 / 溢出销毁卡，外加高压 / 扩容 / 多类型 / 安全阀四张气体卡。
+    details: AE2 的输入 / 输出 / 存储总线、ME 接口与样板供应器都能处理气体；总线可装气体压力卡。
+  - title: 元件与总线升级卡
+    details: 高压 / 扩容 / 多类型 / 泄压阀四张元件卡，接口逐槽控制卡与安全卡，以及总线气体压力卡。
   - title: 游戏内教程
-    details: 支持 GuideME，中英双语页面，物品栏里按 G 即可查阅。
----
+    details: 支持 GuideME，中英双语页面；悬停气体元件按 G 即可查阅。
