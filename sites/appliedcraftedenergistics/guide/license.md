@@ -4,7 +4,6 @@
 
 - **代码与原创资源**：**LGPL v3.0**（标准 SPDX 标识：`LGPL-3.0-only`，[LICENSE](https://github.com/DaKang233/AppliedCraftedEnergistics/blob/main/LICENSE)）。
   不再提供 “or later” 选项；0.2.2 已按该许可重新发布。
-- 本项目是**非商业项目**，不收取费用，也不参与任何付费 / 奖励分成计划。
 - 第三方衍生部分的许可保持不变；完整迁移说明见
   [LICENSE_MIGRATION.md](https://github.com/DaKang233/AppliedCraftedEnergistics/blob/main/docs/LICENSE_MIGRATION.md)。
 
@@ -24,7 +23,7 @@
 > licensed CC BY-NC-SA 3.0; modified for Applied Crafted Energistics.
 
 AE2 本体采用分许可证：API 为 MIT，模组代码为 LGPL-3.0，贴图 / 模型为 CC BY-NC-SA 3.0。
-本模组只调用其公开 API，并遵守上述贴图许可（署名、相同方式共享、非商业）。
+本模组只调用其公开 API，衍生贴图按上述 CC BY-NC-SA 3.0 条款使用。
 
 ## 其他前置模组
 
